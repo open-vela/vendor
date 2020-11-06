@@ -15,3 +15,5 @@ cscope.out
 /.config
 /.depend
 /*.lib
+.kconfig
+/Kconfig
