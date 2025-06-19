@@ -10,7 +10,9 @@ Make.dep
 core
 .gdbinit
 cscope.out
-/*/
+/openvela
+/template
+/xiaomi 
 /.context
 /.config
 /.depend
