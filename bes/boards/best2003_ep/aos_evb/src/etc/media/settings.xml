@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfigurableDomains SystemClassName="Graph">
+  <ConfigurableDomain Name="A2dpDomain" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="disable">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="UsingDevices" MatchesWhen="Excludes" Value="a2dpsnk"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="enable">
+        <CompoundRule Type="All"/>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Graph/Domains/A2dpDomain"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="disable">
+        <ConfigurableElement Path="/Graph/Domains/A2dpDomain">
+          <StringParameter Name="A2dpDomain">a2dpsnk,pause,;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="enable">
+        <ConfigurableElement Path="/Graph/Domains/A2dpDomain">
+          <StringParameter Name="A2dpDomain">a2dpsnk,play,;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="A2dpVolumeDomain" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="0">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="0"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="1">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="1"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="2">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="2"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="3">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="3"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="4">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="4"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="5">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="5"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="6">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="6"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="7">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="7"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="8">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="8"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="9">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="9"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="10">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.a2dpsnkVolume" MatchesWhen="Is" Value="10"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="0">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,0;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="1">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-36dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="2">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-32dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="3">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-28dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="4">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-24dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="5">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-20dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="6">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-16dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="7">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-12dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="8">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-8dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="9">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,-4dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="10">
+        <ConfigurableElement Path="/Graph/Domains/A2dpVolumeDomain">
+          <StringParameter Name="A2dpVolumeDomain">Vola2dpsnk,volume,1;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="StreamVolumeDomain" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="0">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="0"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="1">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="1"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="2">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="2"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="3">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="3"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="4">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="4"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="5">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="5"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="6">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="6"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="7">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="7"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="8">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="8"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="9">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="9"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="10">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="persist.media.StreamVolume" MatchesWhen="Is" Value="10"/>
+        </CompoundRule>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="0">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,0;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="1">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-36dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="2">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-32dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="3">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-28dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="4">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-24dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="5">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-20dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="6">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-16dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="7">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-12dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="8">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-8dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="9">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,-4dB;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="10">
+        <ConfigurableElement Path="/Graph/Domains/StreamVolumeDomain">
+          <StringParameter Name="StreamVolumeDomain">VolStream,volume,1;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+  <ConfigurableDomain Name="MicDomain" SequenceAware="false">
+    <Configurations>
+      <Configuration Name="enable">
+        <CompoundRule Type="All">
+          <SelectionCriterionRule SelectionCriterion="UsingDevices" MatchesWhen="Includes" Value="mic"/>
+        </CompoundRule>
+      </Configuration>
+      <Configuration Name="disable">
+        <CompoundRule Type="All"/>
+      </Configuration>
+    </Configurations>
+    <ConfigurableElements>
+      <ConfigurableElement Path="/Graph/Domains/MicDomain"/>
+    </ConfigurableElements>
+    <Settings>
+      <Configuration Name="enable">
+        <ConfigurableElement Path="/Graph/Domains/MicDomain">
+          <StringParameter Name="MicDomain">pcm0c,play,;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+      <Configuration Name="disable">
+        <ConfigurableElement Path="/Graph/Domains/MicDomain">
+          <StringParameter Name="MicDomain">pcm0c,pause,;</StringParameter>
+        </ConfigurableElement>
+      </Configuration>
+    </Settings>
+  </ConfigurableDomain>
+</ConfigurableDomains>

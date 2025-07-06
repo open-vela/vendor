@@ -1,0 +1,9 @@
+InclusiveCriterion UsingDevices : mic a2dpsnk : 3
+ExclusiveCriterion Ring  : InRing
+ExclusiveCriterion Music : InMusic
+ExclusiveCriterion Alarm : InAlarm
+InclusiveCriterion InRing  : InRing0 InRing1
+InclusiveCriterion InMusic : InMusic0 InMusic1 InMusic2 InMusic3
+InclusiveCriterion InAlarm : InAlarm0
+ExclusiveCriterion persist.media.a2dpsnkVolume a2dpsnkVolume : 0 1 2 3 4 5 6 7 8 9 10 : 5
+ExclusiveCriterion persist.media.StreamVolume StreamVolume   : 0 1 2 3 4 5 6 7 8 9 10 : 5

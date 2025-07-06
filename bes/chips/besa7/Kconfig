@@ -1,0 +1,621 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+if ARCH_CHIP_CUSTOM
+
+# Chip Selection
+
+choice
+	prompt "BES Chip Selection"
+	default ARCH_CHIP_BES2001A7
+
+config ARCH_CHIP_BES2001A7
+	select ARCH_CORTEXA7
+	select ARM_HAVE_FPU_D32
+	select ARCH_HAVE_LOWVECTORS
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_GLOBAL_IRQDISABLE
+	select ARCH_HAVE_MULTICPU
+	select ARM_HAVE_NEON
+	select ARMV7A_HAVE_GICv2
+	select ARMV7A_HAVE_PTM
+	bool "Chip is BES2001A7"
+	---help---
+		Cortex-A7
+
+config ARCH_CHIP_BES2003A7
+	select ARCH_CORTEXA7
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_LOWVECTORS
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_GLOBAL_IRQDISABLE
+	select ARCH_HAVE_MULTICPU
+	select ARM_HAVE_NEON
+	select ARMV7A_HAVE_GICv2
+	select FB_UPDATE
+	select ARCH_HAVE_RESET
+	select ARMV7A_HAVE_PTM
+	bool "Chip is BES2003A7"
+	---help---
+		Cortex-A7
+
+
+endchoice # BESA7 Chip Selection
+
+config BES_DDK_DIR
+	string "Bes Device Development Kit Dir"
+	default "framework/services"
+	---help---
+		This is a name for the BES DDK Source code Dir.
+
+config JTAG_ENABLE
+    bool "Enalbe JTAG/SWD debug, will disable WFI"
+    default y
+
+config RPMSG_GPIO_CLIENT
+	bool "RPMSG gpio client"
+	default n
+	select IOEXPANDER_INT_ENABLE
+
+config RPMSG_GPIO_SERVER
+	bool "RPMSG gpio server"
+	default n
+	select IOEXPANDER_INT_ENABLE
+
+config CONSOLE_USE_CHAR
+    bool "Use char driver on console serial"
+    default n
+
+config BES_BACKTRACE
+    bool "Enable BES Backtrace"
+    default n
+
+config BES_CRASH_DUMP
+    bool "Enable BES Crash Dump"
+    default n
+
+config AUDIO_RPMSG_CLIENT
+	bool "Support audio rpmsg client"
+	default n
+	depends on AUDIO
+	---help---
+		This option mean than audio device is only a virtual interface,
+                real audio implement is in other chip
+
+config AUDIO_BES_NUM_BUFFERS_PLAYBACK
+	int "Number playerback buffer for cache"
+	default 2
+	range 2 128
+		---help---
+		Used when !CONFIG_AUDIO_DRIVER_SPECIFIC_BUFFERS
+
+
+config AUDIO_BES_NUM_BUFFERS_CAPTURE
+	int "Number capture buffer for cache"
+	default 2
+	range 2 128
+		---help---
+		Used when !CONFIG_AUDIO_DRIVER_SPECIFIC_BUFFERS
+
+choice
+	prompt "AI Algorithm Selection"
+	default AI_BES_ALG
+
+config AI_BES_ALG
+	bool "Use bes algorithm"
+
+config HRSC_ALG
+	bool "Use hrsc algorithm"
+
+config AISPEECH_ALG
+	bool "Use aispeech algorithm"
+
+endchoice
+
+# Chip Capabilities
+config A7_DSP_ENABLE
+	bool "A7 DSP Enable"
+	default y
+	depends on !GEN_RECOVERY_BIN
+
+config BIN_FLASH_SIZE
+	hex "BIN FLASH SIZE"
+	default 0x700000
+
+config PSRAM_ENABLE
+	bool "PSRAM support"
+	default y
+
+config PSRAMUHS_ENABLE
+	bool "PSRAMUHS support"
+	default y
+
+if PSRAMUHS_ENABLE
+choice
+	prompt "PSRAMUHS mode"
+	default PSRAMUHS_DEFAULT
+	help
+		Select PSRAMUHS mode
+	config PSRAMUHS_AP325608A
+		bool "psramuhs AP325608A"
+	config PSRAMUHS_ULSMODE
+		bool "psramuhs ULSMODE"
+	config PSRAMUHS_DEFAULT
+		bool "psramuhs default"
+endchoice
+endif
+
+config LIBC_ARCH_MEMCPY
+	bool
+	default n
+
+config LIBC_ARCH_MEMCMP
+	bool
+	default n
+
+config LIBC_ARCH_MEMMOVE
+	bool
+	default n
+
+config LIBC_ARCH_MEMSET
+	bool
+	default n
+
+config LIBC_ARCH_STRCHR
+	bool
+	default n
+
+config LIBC_ARCH_STRCMP
+	bool
+	default n
+
+config LIBC_ARCH_STRCPY
+	bool
+	default n
+
+config LIBC_ARCH_STRNCPY
+	bool
+	default n
+
+config LIBC_ARCH_STRLEN
+	bool
+	default n
+
+config LIBC_ARCH_STRNLEN
+	bool
+	default n
+
+config BES_HAVE_SPI
+	bool "BES_HAVE_SPI"
+	default y
+
+config BES_MTDSDMMC
+	bool "BES_MTDSDMMC"
+	select BES_IOEXPANDER if MMCSD_HAVE_CARDDETECT
+	select BES_GPIOIRQ if MMCSD_HAVE_CARDDETECT
+	default n
+
+if BES_MTDSDMMC
+config BES_SDMMC_SPEED
+	int "SDMMC Speed"
+	default 48000000
+endif
+
+config BES_MTDSDMMC_EMMC
+	bool "BES_MTDSDMMC_EMMC"
+	default n
+
+config BES_HAVE_I2C
+	bool
+	default y
+
+config BES_MMCSD_SPI
+	bool "BES_MMCSD_SPI"
+	select BES_HAVE_SPI
+	default n
+
+config BES_HAVE_DVFS
+	bool "BES_HAVE_DVFS"
+	default n
+
+# Peripheral Group Selections
+
+config BES_LPUART
+	bool
+	default n
+
+
+# Peripheral Selection
+
+if  BES_HAVE_I2C
+
+menu "I2C Port Configuration"
+comment "I2c ports share some pins with uart1 and spilcd, make sure these pins not used"
+
+config SCL_SDA_DEFINED_AT_DDK
+    bool "I2C SCL&SDA PIN defined at DDK"
+    default y
+
+config BES_I2C_DISABLE_YIELD
+       bool "Donot yield i2c transfer."
+       default n
+
+config BES_I2C_LOCK
+	bool "Enable i2c transfer lock on bes chips."
+	default n
+	---help---
+		Enable i2c transfer lock on bes chips.
+
+config BES_I2C0
+	bool "use i2c port0"
+	default n
+	---help---
+		Enable i2c port0.
+
+config BES_I2C1
+	bool "use i2c port1"
+	default n
+	---help---
+		Enable i2c port1.
+
+config BES_I2C2
+	bool "use i2c port2"
+	default n
+	---help---
+		Enable i2c port2.
+
+config BES_I2C3
+	bool "use i2c port3"
+	default n
+	---help---
+		Enable i2c port3.
+
+config BES_I2C4
+	bool "use i2c port4"
+	default n
+	---help---
+		Enable i2c port4.
+
+config BES_GPIOI2C
+	bool "use gpio i2c port 0xff"
+	default n
+	---help---
+		Enable gpio i2c port 0xff.
+
+config BES_I2C_TUNE_FREQ_ON_TRANSFER
+	bool "tune frequency on every transfer"
+	default n
+	---help---
+		tune frequency on every transfer.
+
+endmenu # I2C Port Configuration
+endif #BES_HAVE_I2C
+
+menu "BES Peripheral Selection"
+
+config MBOX
+
+	bool "MBOX"
+	default y
+
+config BES_LPUART0
+	bool "LPUART0"
+	default n
+	select BES_LPUART
+	select LPUART0_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+config BES_LPUART1
+	bool "LPUART1"
+	default n
+	select BES_LPUART
+	select LPUART1_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+config BES_LPUART2
+	bool "LPUART2"
+	default n
+	select BES_LPUART
+	select LPUART2_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+
+endmenu # BES Peripheral Selection
+
+config BES_WDT_DISABLE
+	bool "Disable watchdog on reset"
+	default y
+
+menu "BES GPIO Interrupt Configuration"
+
+config BES_GPIOIRQ
+	bool "GPIO pin interrupts"
+	default n
+	select DEV_GPIO
+	---help---
+		Enable support for interrupting GPIO pins
+
+if BES_GPIOIRQ
+config BES_IOEXPANDER
+	bool "Bes I/O Expander"
+	default n
+	select IOEXPANDER
+	select IOEXPANDER_INT_ENABLE
+	---help---
+		Build a simple I/O Expander.
+
+config BES_PORT0INTS
+	bool "GPIO0 interrupts"
+	---help---
+		Enable support for 32 interrupts from GPIO port 0 pins
+
+config BES_PORT1INTS
+	bool "GPIO1 interrupts"
+	---help---
+		Enable support for 8 interrupts from GPIO port 1 pins
+
+endif
+endmenu # BES GPIO Interrupt Configuration
+endif # ARCH_CHIP_BES
+menu "DSI PHY Configuration"
+
+config DSI_2LANE_MODE
+	bool "enable 2 lanes for dsi phy"
+	default n if !BES_LCD_NT38350
+	default y if BES_LCD_NT38350
+
+config SWAP_DSI_CLK_PN
+	bool "swap dsi clk pn pin"
+	default n
+
+config SWAP_DSI_LANE0_PN
+	bool "swap dsi lane0 pn pin"
+	default n
+
+if DSI_2LANE_MODE
+config SWAP_DSI_LANE1_PN
+	bool "swap dsi lane1 pn pin"
+	default n
+endif
+
+config DSI_VIDEO_MODE
+	bool "dsi use vido mode, defualt is cmd mode"
+	default n
+
+choice
+	prompt "select dsi output color format"
+	default DSIPHY_OUTFMT_RGB888
+	help
+		select dsi phy output colot format
+
+	config DSIPHY_OUTFMT_RGB888
+		bool "RGB888"
+
+	config DSIPHY_OUTFMT_RGB565
+		bool "RGB565"
+
+	config DSIPHY_OUTFMT_RGB666
+		bool "RGB666"
+
+	config DSIPHY_OUTFMT_LOOSELYRGB666
+		bool "LOOSELYRGB666"
+
+	config DSIPHY_OUTFMT_RGB101010
+		bool "RGB101010"
+
+	config DSIPHY_OUTFMT_YCbCr24
+		bool "YCbCr24"
+
+	config DSIPHY_OUTFMT_YCbCr20
+		bool "YCbCr20"
+
+	config DSIPHY_OUTFMT_YCbCr16
+		bool "YCbCr16"
+
+	config DSIPHY_OUTFMT_YCbCr12
+		bool "YCbCr12"
+endchoice
+
+endmenu
+
+menu "BES LCDC Configuration"
+
+config ULPS_MODE_SUPPORT
+	bool "ulps mode support"
+	default y
+
+config DSI_SLEEP
+	bool "dsi phy sleep support"
+	default y
+
+config LCDC_SLEEP
+	bool "lcdc sleep support"
+	default y
+
+config LCDC_TE_IRQ_ENABLE
+	bool "enable TE irq"
+	default y
+
+config FB_DOUBLE_BUFFER
+	bool "double buffer support"
+	default y
+
+config FB_PANDISPLAY
+	bool "pandisplay support"
+	default y
+
+config FB_DRV_ROTATE
+	bool "rotate fb"
+	default n
+
+if FB_DRV_ROTATE
+choice
+    prompt "chose rotate method"
+    default ROTATE_DMA
+    help
+        chose rotate method
+
+    config ROTATE_DMA
+        bool "rotate use DMA"
+
+    config ROTATE_CPU
+        bool "rotate use CPU"
+endchoice
+choice
+    prompt "rotate 90 or 270"
+    default FB_ROTATE_270
+    help
+        chose rotate method
+
+    config FB_ROTATE_90
+        bool "rotate 90"
+
+    config FB_ROTATE_270
+        bool "rotate 270"
+endchoice
+if ROTATE_DMA
+choice
+    prompt "chose dma rotate method"
+    default ROTATE_SRC2D if FB_STATIC_BUFFER
+    help
+        chose dma rotate method
+
+    config ROTATE_SRC2D
+        bool "DMA rotate use source 2d, dist address is continuous"
+
+    config ROTATE_DST2D
+        bool "DMA rotate use dist 2d, source address is continuous"
+endchoice
+endif
+
+config FBDST_BUFFER_SECTION
+	string "The section where rotate dst framebuffer buffer is located"
+	default ".psramuhs_bss"
+	depends on PSRAMUHS_ENABLE
+	---help---
+		The section where rotate dst framebuffer buffer is located.
+endif
+
+config FBMEM_CACHED
+	bool "fbmem is cached ?"
+	default n
+	help
+		If fbmem is cached, need enable this config.
+
+config LCDC_AUTOREFRESH_MODE
+	bool "Lcdc refresh lcd automatic"
+	default n
+
+config FB_STATIC_BUFFER
+	bool "framebuffer use static buffer(default on SRAM)"
+	default y
+
+if FB_STATIC_BUFFER
+config FB_BUFFER_FIXED_ADDR
+	hex "framebuffer buffer is located at fix address"
+	default 0
+	depends on FB_STATIC_BUFFER
+	---help---
+		The address where framebuffer buffer is located.
+
+config FB_BUFFER_SECTION
+	string "The section where framebuffer buffer is located"
+	default ".framebuffer"
+	depends on FB_STATIC_BUFFER
+	---help---
+		The section where framebuffer buffer is located.
+endif
+menu "Layer Configuration"
+
+config LCDC_L1
+	bool "lcdc layer1"
+	default n if !VIDEO_FB
+	default y if VIDEO_FB
+
+if LCDC_L1
+choice
+	prompt "select layer1 color fmt"
+	default LCDC_L1_ARGB8888
+	help
+		Select lcdc layer1 color formate.
+
+	config LCDC_L1_ARGB8888
+		bool "ARGB8888"
+
+	config LCDC_L1_RGB888
+		bool "RGB888"
+
+	config LCDC_L1_RGB565
+		bool "RGB565"
+endchoice
+endif
+
+config LCDC_L2
+	bool "lcdc layer2"
+	default n
+
+if LCDC_L2
+choice
+	prompt "select layer2 color fmt"
+	default LCDC_L2_ARGB8888
+	help
+		Select lcdc layer2 color formate.
+
+	config LCDC_L2_ARGB8888
+		bool "ARGB8888"
+
+	config LCDC_L2_RGB888
+		bool "RGB888"
+
+	config LCDC_L2_RGB565
+		bool "RGB565"
+endchoice
+endif
+endmenu
+
+config LCDC_WB_TEST
+	bool "lcdc write back test"
+	default n
+
+if LCDC_WB_TEST
+config LCDC_LWB
+	bool "lcdc write back layer"
+	default n
+
+if LCDC_LWB
+choice
+	prompt "select write back layer color fmt"
+	default LCDC_L0_RGB888
+	help
+		Select lcdc write back layer color formate.
+
+	config LCDC_L0_ARGB8888
+		bool "ARGB8888"
+
+	config LCDC_L0_RGB888
+		bool "RGB888"
+
+	config LCDC_L0_RGB565
+		bool "RGB565"
+endchoice
+endif
+endif
+endmenu
+
+config TMA525C
+	bool "TMA525C Touch Pad"
+	default n
+	select I2C
+	---help---
+		Enable support for the TMA525C Touch Pad driver.
+
+config ZINITIX
+	bool "ZINITIX Touch Pad"
+	default n
+	select I2C
+	---help---
+		Enable support for the ZINITIX Touch Pad driver.

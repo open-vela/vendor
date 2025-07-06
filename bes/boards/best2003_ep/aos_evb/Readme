@@ -1,0 +1,26 @@
+a7刷屏, a7 远场唤醒算法。
+
+build:
+
+$./build.sh vendor/bes/boards/best2003_ep/aos_evb/configs/bootloader -j  //生成rtos/nuttx/nuttx_bl.bin
+$./build.sh vendor/bes/boards/best2003_ep/aos_evb/configs/ota -j		  //生成rtos/nuttx/nuttx_ota.bin
+$./build.sh vendor/bes/boards/best2003_ep/aos_evb/configs/audio -j		  //生成rtos/nuttx/nuttx_a7.bin	跑在a7上
+$./build.sh vendor/bes/boards/best2003_ep/aos_evb/configs/ap -j		  //生成rtos/nuttx/nuttx_ap.bin 跑在m33上
+
+clean:
+1. 添加distclean到build命令后面，比如 ./build.sh vendor/bes/boards/best2003_ep/aos_evb/configs/ap distclean
+2. 如果有其他异常可以按如下手动删除配置文件后重新编译。
+rm nuttx/.config
+rm nuttx/Make.defs
+
+config：
+添加menuconfig到build命令后面，比如 ./build.sh vendor/bes/boards/best2003_ep/aos_evb/configs/ap menuconfig
+注意：配置后需要先distclean下再重新编译
+
+烧录：
+.\prebuild\m0\dldtool.exe 6 .\prebuild\m0\programmer2003.bin `
+>> -M Z:\aos-nuttx\rtos\nuttx\nuttx_bl.bin `
+>> --addr 0x2C040000 Z:\aos-nuttx\rtos\nuttx\nuttx_ota.bin `
+>> --addr 0x2C0C0000 Z:\aos-nuttx\rtos\nuttx\nuttx_ota.bin `
+>> --addr 0x2C600000 Z:\aos-nuttx\rtos\nuttx\nuttx_a7.bin `
+>> -M Z:\aos-nuttx\rtos\nuttx\nuttx_ap.bin

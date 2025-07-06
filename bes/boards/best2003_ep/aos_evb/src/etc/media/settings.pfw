@@ -1,0 +1,83 @@
+domain: A2dpDomain
+	conf: disable
+		UsingDevices Excludes a2dpsnk
+		/Graph/Domains/A2dpDomain = a2dpsnk,pause,;
+	conf: enable
+		/Graph/Domains/A2dpDomain = a2dpsnk,play,;
+
+domain: A2dpVolumeDomain
+	conf: 0
+		persist.media.a2dpsnkVolume Is 0
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,0;
+	conf: 1
+		persist.media.a2dpsnkVolume Is 1
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-36dB;
+	conf: 2
+		persist.media.a2dpsnkVolume Is 2
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-32dB;
+	conf: 3
+		persist.media.a2dpsnkVolume Is 3
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-28dB;
+	conf: 4
+		persist.media.a2dpsnkVolume Is 4
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-24dB;
+	conf: 5
+		persist.media.a2dpsnkVolume Is 5
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-20dB;
+	conf: 6
+		persist.media.a2dpsnkVolume Is 6
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-16dB;
+	conf: 7
+		persist.media.a2dpsnkVolume Is 7
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-12dB;
+	conf: 8
+		persist.media.a2dpsnkVolume Is 8
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-8dB;
+	conf: 9
+		persist.media.a2dpsnkVolume Is 9
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,-4dB;
+	conf: 10
+		persist.media.a2dpsnkVolume Is 10
+		/Graph/Domains/A2dpVolumeDomain = Vola2dpsnk,volume,1;
+
+domain: StreamVolumeDomain
+	conf: 0
+		persist.media.StreamVolume Is 0
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,0;
+	conf: 1
+		persist.media.StreamVolume Is 1
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-36dB;
+	conf: 2
+		persist.media.StreamVolume Is 2
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-32dB;
+	conf: 3
+		persist.media.StreamVolume Is 3
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-28dB;
+	conf: 4
+		persist.media.StreamVolume Is 4
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-24dB;
+	conf: 5
+		persist.media.StreamVolume Is 5
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-20dB;
+	conf: 6
+		persist.media.StreamVolume Is 6
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-16dB;
+	conf: 7
+		persist.media.StreamVolume Is 7
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-12dB;
+	conf: 8
+		persist.media.StreamVolume Is 8
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-8dB;
+	conf: 9
+		persist.media.StreamVolume Is 9
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,-4dB;
+	conf: 10
+		persist.media.StreamVolume Is 10
+		/Graph/Domains/StreamVolumeDomain = VolStream,volume,1;
+
+domain: MicDomain
+	conf: enable
+		UsingDevices Includes mic
+		/Graph/Domains/MicDomain = pcm0c,play,;
+	conf: disable
+		/Graph/Domains/MicDomain = pcm0c,pause,;

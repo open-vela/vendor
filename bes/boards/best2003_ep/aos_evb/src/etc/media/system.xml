@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Subsystem Name='Domains' Type='FFmpeg'>
+  <ComponentLibrary/>
+  <InstanceDefinition>
+    <StringParameter Name='A2dpDomain'         MaxLength='128' Mapping='Commander'/>
+    <StringParameter Name='A2dpVolumeDomain'   MaxLength='128' Mapping='Commander'/>
+    <StringParameter Name='StreamVolumeDomain' MaxLength='128' Mapping='Commander'/>
+    <StringParameter Name='MicDomain'          MaxLength='128' Mapping='Commander'/>
+  </InstanceDefinition>
+</Subsystem>
