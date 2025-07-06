@@ -1,0 +1,43 @@
+/****************************************************************************
+ * vendor/bes/boards/best1600_ep/src/etc/init.d/rcS.first
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.  The
+ * ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ ****************************************************************************/
+
+#ifndef CONFIG_NSH_DISABLE_UNAME
+#ifdef CONFIG_SYSLOG_CHARDEV
+uname -a > /dev/log
+#endif
+#endif
+
+#ifdef CONFIG_FS_PROCFS
+#  ifdef CONFIG_NSH_PROC_MOUNTPOINT
+#    ifdef CONFIG_NET_USRSOCK
+       mount -t procfs /mnt
+       mount -t rpmsgfs -o cpu=ap,fs=/proc/net /netcp
+       mount -t unionfs -o fspath1=/mnt,fspath2=/netcp,prefix2=net CONFIG_NSH_PROC_MOUNTPOINT
+#    else
+       mount -t procfs CONFIG_NSH_PROC_MOUNTPOINT
+#    endif
+#  endif
+#endif
+
+#ifdef CONFIG_FS_TMPFS
+mount -t tmpfs /tmp
+#endif
+
+timedatectl set-timezone Asia/Shanghai

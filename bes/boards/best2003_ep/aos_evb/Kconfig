@@ -1,0 +1,86 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+config  ARCH_BOARD_CUSTOM_BES2003_EVB
+        bool "Select board bes2003 evb from BES"
+config ARCH_BOARD_CUSTOM_PRODUCT_NAME
+	string "custom product name"
+	default "evb"
+
+config BOARD_CUSTOM_MIJIA_PRODUCT_NAME
+	string "MiJia product name"
+	default ""
+
+config BOARD_CUSTOM_MIJIA_PRODUCT_ID
+	string "MiJia product id"
+	default ""
+
+config BOARD_CUSTOM_MIJIA_PRODUCT_MODEL
+	string "MiJia product model"
+	default ""
+
+config BOARD_CUSTOM_PRODUCT_XIAOAI_APP_ID
+	string "XiaoAi product app id"
+	default ""
+
+config BOARD_CUSTOM_PRODUCT_HARDWARE
+	string "Product Mico hardware"
+	default ""
+
+config BOARD_CUSTOM_PRODUCT_SN_LEN
+	int "Product serial number length"
+	default 15
+
+#
+#   Board Select
+#
+choice
+prompt "choice product board"
+
+config BES2003_AP
+	select BES_CORE_AP
+	bool "bes2003 AP"
+
+config BES2003_CP
+	select BES_CORE_CP
+	bool "bes2003 CP"
+
+config BES2003_AUDIO
+	select BES_CORE_AUDIO
+	bool "bes2003 AUDIO"
+
+config BES2003_OTA
+	select BES_CORE_OTA
+	bool "bes2003 OTA"
+
+config BES2003_BL
+	select BES_CORE_BL
+	bool "bes2003 Bootloader"
+
+config BES2003_TEE
+	select BES_CORE_TEE
+	bool "bes2003 TEE"
+endchoice
+
+# Manually setting board id
+config MANUAL_BOARD_ID
+    bool "Setting sensor board id manually"
+    depends on BES1600_SENSOR
+    default n
+    ---help---
+        Setting sensor board id manually
+
+if MANUAL_BOARD_ID
+
+config BOARD_ID
+    int "Setting board id"
+    default 0
+    range 0 64
+    ---help---
+        Setting board id for sensor core.
+
+endif # MANUAL_BOARD_ID
+
+source "../vendor/bes/boards/Kconfig"

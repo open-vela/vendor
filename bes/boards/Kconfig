@@ -1,0 +1,616 @@
+#/***************************************************************************
+# *
+# * Copyright 2015-2022 BES.
+# * All rights reserved. All unpublished rights reserved.
+# *
+# * No part of this work may be used or reproduced in any form or by any
+# * means, or stored in a database or retrieval system, without prior written
+# * permission of BES.
+# *
+# * Use of this work is governed by a license granted by BES.
+# * This work contains confidential and proprietary information of
+# * BES. which is protected by copyright, trade secret,
+# * trademark and other intellectual property rights.
+# *
+# ****************************************************************************/
+
+config BES_RPTUN_RPMSG_PMU
+    bool "Enable RPMSG PMU"
+    default n
+config BES_RPTUN_RPMSG_FACTORY
+    bool "Enable RPMSG FACTORY"
+    default n
+config BES_RPTUN_RPMSG_NVRECORD
+    bool "Enable RPMSG NVRECORD"
+    default n
+config BES_RPTUN_RPMSG_SYSFREQ
+    bool "Enable RPMSG SYSFREQ"
+    default n
+
+menu "choice product core"
+	config BES_CORE_BL
+		bool "core bl"
+	config BES_CORE_OTA
+		bool "core ota"
+	config BES_CORE_AP
+		bool "core ap"
+	config BES_CORE_APC1
+		bool "core apc1"
+	config BES_CORE_TEE
+		bool "core tee"
+	config BES_CORE_CP
+		bool "core cp"
+	config BES_CORE_AUDIO
+		bool "core audio"
+	config BES_CORE_SENSOR
+		bool "core sensor"
+	config BES_CORE_BTH
+		bool "core bth"
+	config BES_CORE_BTHCP
+		bool "core bth1"
+endmenu
+
+config HW_TEST_ENABLE
+	bool "Enable bes hw test api"
+	default false
+
+config BESIO_INT_NCALLBACKS
+	int "Max number of gpio interrupt callbacks"
+	default 142
+	---help---
+		This is the maximum number of interrupt callbacks supported
+
+config BOARD_DEF_LCD_RESOLUTION
+	bool "Lcd x and y resolution define configs"
+	default n
+	---help---
+		Define LCD resolution by config
+
+if BOARD_DEF_LCD_RESOLUTION
+config BOARD_LCD_X_RES
+	int "Lcd x resolution"
+	---help---
+		Horizontal resolution of the on-board screen
+
+config BOARD_LCD_Y_RES
+	int "Lcd y resolution"
+	---help---
+		Vertical resolution of the on-board screen
+endif
+
+config LCD_RM69090
+	bool
+	default n
+
+config BES_LCD_RM69090
+	bool "LCD RM69090"
+	default n
+	select LCD_RM69090
+	select IOEXPANDER
+	---help---
+		Enable support LCD RM69090.
+
+config LCD_RM69330
+	bool
+	default n
+
+config BES_LCD_RM69330
+	bool "LCD RM69330"
+	default n
+	select LCD_RM69330
+	select IOEXPANDER
+	---help---
+		Enable support LCD RM69330.
+
+config LCD_GC9503NP
+	bool
+	default n
+
+config BES_LCD_GC9503NP
+	bool "LCD GC9503NP"
+	default n
+	select LCD_GC9503NP
+	select IOEXPANDER
+	---help---
+		Enable support LCD GC9503NP.
+
+config LCD_ST7703
+	bool
+	default n
+
+config BES_LCD_ST7703
+	bool "LCD ST7703"
+	default n
+	select LCD_ST7703
+	---help---
+		Enable support LCD ST7703
+
+config LCD_ST7701S
+	bool
+	default n
+
+config BES_LCD_ST7701S
+	bool "LCD ST7701S"
+	default n
+	select LCD_ST7701S
+	---help---
+		Enable support LCD ST7701S
+
+config LCD_ST7796U
+	bool
+	default n
+
+config BES_LCD_ST7796U
+	bool "LCD ST7796U"
+	default n
+	select LCD_ST7796U
+	---help---
+		Enable support LCD ST7796U
+
+config LCD_ST7785M
+	bool
+	default n
+
+config BES_LCD_ST7785M
+	bool "LCD ST7785M"
+	default n
+	select LCD_ST7785M
+	---help---
+		Enable support LCD ST7785M
+
+config LCD_ST7797
+	bool
+	default n
+
+config BES_LCD_ST7797
+	bool "LCD ST7797"
+	default n
+	select LCD_ST7797
+	---help---
+		Enable support LCD ST7797
+
+config LCD_HX8394
+	bool
+	default n
+
+config BES_LCD_HX8394
+	bool "LCD HX8394"
+	default n
+	---help---
+		Enable support LCD HX8394
+
+config LCD_A064
+	bool
+	default n
+
+config BES_LCD_A064
+	bool "LCD A064"
+	default n
+	select LCD_A064
+	select IOEXPANDER
+	---help---
+		Enable support LCD A064.
+
+config LCD_JD9165A
+	bool
+	default n
+
+config BES_LCD_JD9165A
+	bool "LCD JD9165A"
+	default n
+	select LCD_JD9165A
+	select IOEXPANDER
+	---help---
+		Enable support LCD JD9165A.
+
+config LCD_JT4007
+	bool
+	default n
+
+config BES_LCD_JT4007
+	bool "LCD JT4007"
+	default n
+	select LCD_JT4007
+	select IOEXPANDER
+	---help---
+		Enable support LCD JT4007.
+
+#
+# touch driver configuration
+#
+
+if 0
+config CLKP_REPAIR_GPIO
+  hex "use HAL_IOMUX_PIN_T 3_7(default) to repair mipi clk_p"
+  default 31
+  depends on BES_LCD_ST7703 || BES_LCD_ST7796U || BES_LCD_ST7701S || BES_LCD_ST7785M
+  ---help---
+	HAL_IOMUX_PIN_T 3_7(default) is same as nuttx pin index 31 (31=3*8+7).
+	Set to ff when don't nedd repair clk_p
+endif
+
+config BES_TP_TMA525C
+	bool "Touch Screen with TMA525C touchpad"
+	default n
+	select TMA525C
+	select IOEXPANDER
+	select INPUT_TOUCHSCREEN
+	---help---
+		Enable support Touch Screen with TMA525C touchpad.
+
+config BES_TP_CHSC6540
+	bool "Touch Screen with CHSC6540 touchpad"
+	default n
+	select IOEXPANDER
+	select INPUT_TOUCHSCREEN
+	---help---
+		Enable support Touch Screen with CHSC6540 touchpad.
+
+config BES_TP_A064_FTS
+	bool "Touch Screen with A064 fts touchpad"
+	default n
+	select IOEXPANDER
+	select INPUT_TOUCHSCREEN
+	---help---
+		Enable support Touch Screen with A064 fts touchpad.
+
+config BES_TP_IST415X
+	bool "Touch Screen with IST415X touchpad"
+	default n
+	select IOEXPANDER
+	select INPUT_TOUCHSCREEN
+	---help---
+		Enable support Touch Screen with IST415X touchpad.
+
+config BES_TP_CST3240
+	bool "Touch Screen with CST3240 touchpad"
+	default n
+	select IOEXPANDER
+	select INPUT_TOUCHSCREEN
+	---help---
+		Enable support Touch Screen with CST3240 touchpad.
+
+config BES_HARDWARE_V3
+	bool "For BES2600WP V3 Hardware"
+	default n
+	---help---
+		Enable support V3 hardware
+
+config BES_HARDWARE_MIWARE_EN
+	bool "bes2600wp hardware open miwear default"
+	default n
+	---help---
+		Enable support open miwear default
+
+config  BES_ACCLIS2DH
+	bool "Support acclis2dh sensor"
+	default n
+	depends on BES_I2C0 || BES_I2C1
+	---help---
+		Enable accelerometer LIS2DH driver
+
+config  BES_HAVE_RGBLED
+	bool "Support PWM RGBLED"
+	default n
+	---help---
+		Enable PWM RGBLED driver
+
+config  BES_ADC_BUTTONS
+	bool "Support ADC buttons"
+	default n
+	---help---
+		Enable ADC button driver
+
+config  BES_TEMP_INTERNAL
+	bool "Support ADC temperature of internal"
+	default n
+	select ANALOG
+	select ADC
+	---help---
+		Enable soc internal temperature
+
+config  BES_TEMP_NTC_SKIN
+	bool "Support ADC temperature of ntc skin"
+	default n
+	select ANALOG
+	select ADC
+	---help---
+		Enable ntc skin temperature
+
+config  BES_TEMP_NTC_SHELL
+	bool "Support ADC temperature of ntc shell"
+	default n
+	select ANALOG
+	select ADC
+	---help---
+		Enable ntc shell temperature
+
+config  BES_TEMP_NTC_SUB
+	bool "Support ADC temperature of ntc sub"
+	default n
+	select ANALOG
+	select ADC
+	---help---
+		Enable ntc sub temperature
+
+if BES_TEMP_INTERNAL || BES_TEMP_NTC_SKIN || BES_TEMP_NTC_SHELL || BES_TEMP_NTC_SUB
+
+config BES_TEMP_MULTIPLE
+	int "temperature multiple"
+	default 100
+	---help---
+		float * MULTIPLE_TEMP = tmp
+endif
+
+config  BES_BUTTONS_LOWER
+	bool "Support Low level driver for ADC buttons"
+	default n
+	---help---
+		Enable ADC button low level driver
+
+config  AUDIO_PA_SWITCH_GPIO
+	int "Set PA GPIO"
+	default 22
+	---help---
+		This is the gpio id for audio pa switch(22 means gpio2_2)
+
+config TARGET_PROFILE
+	string  "xiaomi target profile"
+	default "lx05"
+
+config BES_AUDIO_AW88266A
+  bool "Audio awinic88266a of bes platform"
+  default n
+  select AUDIO_AW88266A
+  select AUDIO_COMP
+
+
+config BES_AUDIO_CS35L41B
+  bool "Audio cs35l41b of bes platform"
+  default n
+  select AUDIO_CS35L41B
+  select AUDIO_COMP
+
+config BES_AUDIO_FS1818U
+  bool "Audio fs1818u of bes platform"
+  default n
+  select AUDIO_FS1818U
+  select AUDIO_COMP
+
+config BES_AUDIO_CODEC_PLAYBACK
+	bool "config code playback => pcm0p"
+	default n
+
+config BES_AUDIO_CODEC_CAPTURE
+	bool "config code capture => pcm0c"
+	default n
+
+config BES_AUDIO_BTPCM_PLAYBACK
+	bool "config code playback => pcm1p"
+	default n
+
+config BES_AUDIO_BTPCM_CAPTURE
+	bool "config code capture => pcm1c"
+	default n
+
+config BES_AUDIO_I2S0_MASTER_PLAYBACK
+	bool "config i2s0 master playback"
+	default n
+
+config BES_AUDIO_I2S0_MASTER_CAPTURE
+	bool "config i2s0 master capture"
+	default n
+
+config BES_AUDIO_I2S1_MASTER_PLAYBACK
+	bool "config i2s1 master playback"
+	default n
+
+config BES_AUDIO_I2S1_MASTER_CAPTURE
+	bool "config i2s1 master capture"
+	default n
+
+config BES_AUDIO_I2S0_SLAVE_PLAYBACK
+	bool "config i2s0 slave playback"
+	default n
+
+config BES_AUDIO_I2S0_SLAVE_CAPTURE
+	bool "config i2s0 slave capture"
+	default n
+
+config BES_AUDIO_I2S1_SLAVE_PLAYBACK
+	bool "config i2s1 slave playback"
+	default n
+
+config BES_AUDIO_I2S1_SLAVE_CAPTURE
+	bool "config i2s1 slave capture"
+	default n
+
+config BES_BAT_ID
+	bool "Battery id of bes platform"
+	default n
+	select ANALOG
+	select ADC
+	---help---
+		Enable ADC for battery ID
+
+config BES_BAT_VOLTAGE
+	bool "Battery id of bes platform"
+	default n
+	select ANALOG
+	select ADC
+	---help---
+		Enable ADC for battery VOLTAGE
+
+config DMA2D
+	bool "Enable DMA2D on LCDC"
+	default n
+	---help---
+		Enable DMA2D on LCDC
+
+if DMA2D
+
+config DMA2D_NLAYERS
+	int "Set DMA2D overlay number"
+	default 0
+	---help---
+		Set DMA2D overlay number
+
+config DMA2D_RGB565
+	bool "DMA2D support RGB565 on LCDC"
+	default y if DSIPHY_OUTFMT_RGB565
+	---help---
+		Enable DMA2D on LCDC
+
+config DMA2D_ARGB8888
+	bool "DMA2D support ARGB8888 on LCDC"
+	default y if DSIPHY_OUTFMT_RGB888
+	---help---
+		Enable DMA2D on LCDC
+
+endif
+
+choice
+prompt "BES board start file"
+default BES_BOARD_START_FILE_CHIP_START
+
+config BES_BOARD_START_FILE_CM
+	bool "BES board start file for cortext-m"
+
+config BES_BOARD_START_FILE_CA
+	bool "BES board start file for cortext-a"
+
+config BES_BOARD_START_FILE_CMCP
+	bool "BES board start file for cmcp"
+
+config BES_BOARD_START_FILE_XTENSA
+	bool "BES board start file for hifi"
+
+config BES_BOARD_START_FILE_CHIP_START
+	bool "BES board start file for default, use bes_start.c"
+
+endchoice
+
+menu "Timer/counter Configuration"
+choice
+	prompt "Select scheduler timer"
+	default USE_FAST_TIMER
+
+	config BES_ONESHOT_SYSTICK
+		bool "USE systick timer for schedule"
+
+	config USE_SLOW_TIMER
+		bool "USE slow hw timer for schedule"
+
+	config USE_FAST_TIMER
+		bool "USE fast hw timer for schedule"
+endchoice
+
+config CALIB_SLOW_TIMER
+	bool "Calib slow hw timer"
+	default y
+
+config BES_ONESHOT
+	bool
+	default y
+
+config BES_FREERUN
+	bool
+	default y
+	select PTHREAD_MUTEX_TYPES
+
+endmenu # Timer/counter Configuration
+
+config BES_EMMC_DEV
+	bool "Enable bes emmc block dev driver"
+	default n
+
+config BOARD_POWER_MANAGER
+	bool "Enable board power manage"
+	default n
+
+config BES_CUSTOM_BTBLE_ADDR
+	bool "Support get bt/ble address from custom interface"
+	default n
+
+config BES_JTAG_IOMUX_INDEX
+	int "Jtag iomux select"
+	default 22
+
+config BES_BIN_RESERVE4VERSION_OFFSET
+	int "Offset of version array in binary"
+	default 2048
+
+config BES_BIN_RESERVE4VERSION_SIZE
+	int "Size of version array in binary"
+	default 0
+
+config BES_CONSOLE_UART_RX_OPEN_IRQ
+	bool "Enable console uart rx pin irq for wakeup debug"
+	default n
+
+if BES_CONSOLE_UART_RX_OPEN_IRQ
+config BES_CONSOLE_UART_RX_PIN
+	string "Enable console uart rx pin"
+	default "HAL_GPIO_PIN_P2_2"
+endif
+
+config BES_USE_BOARD_FLASH_TABLE
+	bool "Use board defined ptable"
+	default n
+
+config BES_BOARD_VCHGR_AS_GPIO
+    bool "pmu vchgr pin used as gpio"
+    default n
+
+config BES_NO_CP
+    bool "disable cp binary build."
+    default n
+
+config BES_CP_BIN_FLASH_BOOT
+       bool "Enable cp boot in flash"
+       default n
+
+if BES_CP_BIN_FLASH_BOOT
+config BES_CP_BIN_FLASH_OFFSET
+       hex "Set cp boot addr in flash"
+    default 0
+	depends on BES1700_CP
+endif
+
+config BES_CAMSPI
+    bool "Enable bes camspi"
+    default n
+    select I2C
+    select VIDEO
+    ---help---
+        Select support Image sensor.
+
+if BES_CAMSPI
+choice
+prompt "BES camera sensor"
+default BES_CAMERA_GC032A
+
+config BES_CAMERA_GC032A
+    bool "BES Image sensor Gc032a"
+
+endchoice
+endif
+
+config BES_CAMCSI
+    bool "Enable bes camcsi"
+    default n
+    select I2C
+    select VIDEO
+    ---help---
+        Select support Image sensor.
+
+if BES_CAMCSI
+choice
+prompt "BES camera sensor"
+default BES_CAMERA_GC2145
+
+config BES_CAMERA_GC2145
+    bool "BES Image sensor Gc2145"
+
+endchoice
+endif

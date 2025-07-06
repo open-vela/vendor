@@ -1,0 +1,225 @@
+############################################################################
+# boards/best2001_ep/Make.defs
+#
+#   Copyright (C) 2018 Gregory Nutt. All rights reserved.
+#   Author: Gregory Nutt <gnutt@nuttx.org>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+# 3. Neither the name NuttX nor the names of its contributors may be
+#    used to endorse or promote products derived from this software
+#    without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+############################################################################
+
+include ${TOPDIR}/.config
+export CONFIG_ARCH_BOARD := nx_bestbsp_dsp
+
+BES_SDK_TARGET := lib$(CONFIG_ARCH_BOARD).a
+BES_SDK_BUILDIR := $(realpath $(TOPDIR)/../vendor/bes/$(shell echo ${CONFIG_BES_DDK_DIR}))
+
+export BES_SDK_FLASGS := -DCHIP_A7_DSP -I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/hal \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/cmsis/inc/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/services/multimedia/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/services/multimedia/audio/process/ \
+
+
+ifeq ($(CONFIG_ARCH_CHIP_BES2003A7),y)
+BES_SDK_FLASGS += -DCHIP_BEST2003 -DCHIP_BEST2003_DSP
+endif
+ifeq ($(CONFIG_ARCH_CHIP_BES2001A7),y)
+BES_SDK_FLASGS += -DCHIP_BEST2001
+endif
+
+include ${TOPDIR}/tools/Config.mk
+include $(TOPDIR)/arch/arm/src/armv7-a/Toolchain.defs
+
+ifeq ($(CONFIG_BOOT_RUNFROMFLASH),y)
+ LDSCRIPT = _armca_flash.lds
+else ifeq ($(CONFIG_BOOT_RUNFROMISRAM),y)
+ LDSCRIPT = _armca_psram.lds
+ #LDSCRIPT = sram.ld
+endif
+
+$(warning, LDSCRIPT is $(LDSCRIPT))
+# Linux/Cygwin-native toolchain
+CONFIG_ARCH_BOARD_CUSTOM_NAME_STR := $(subst ",,$(CONFIG_ARCH_BOARD_CUSTOM_NAME))
+BES_SDK_LINK_PATH ?= $(BOARD_DIR)/configs/$(CONFIG_ARCH_BOARD_CUSTOM_NAME_STR)
+ARCHSCRIPT = $(BES_SDK_LINK_PATH)/$(LDSCRIPT)
+$(warning, LDSCRIPT is $(LDSCRIPT))
+$(warning, ARCHSCRIPT is $(ARCHSCRIPT))
+
+ifeq ($(CONFIG_LTO_FULL),)
+CC = $(CROSSDEV)gcc
+CXX = $(CROSSDEV)g++
+CPP = $(CROSSDEV)gcc -E -P -x c
+LD = $(CROSSDEV)gcc
+STRIP = $(CROSSDEV)strip --strip-unneeded
+AR = $(CROSSDEV)ar rcsP
+NM = $(CROSSDEV)nm
+OBJCOPY = $(CROSSDEV)objcopy
+OBJDUMP = $(CROSSDEV)objdump
+endif
+
+ARCHCFLAGS += -nostdlib -pipe -Wno-int-to-pointer-cast
+ARCHCXXFLAGS += -std=c++20 -pipe
+ARCHPICFLAGS = -fpic -msingle-pic-base -mpic-register=r10
+
+CFLAGS := $(ARCHCFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+CPICFLAGS = $(ARCHPICFLAGS) $(CFLAGS)
+CXXFLAGS := $(ARCHCXXFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHXXINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+CXXPICFLAGS = $(ARCHPICFLAGS) $(CXXFLAGS)
+CPPFLAGS := $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+AFLAGS := $(CFLAGS) -D__ASSEMBLY__
+
+NXFLATLDFLAGS1 = -r -d -warn-common
+NXFLATLDFLAGS2 = $(NXFLATLDFLAGS1) -T$(TOPDIR)/binfmt/libnxflat/gnu-nxflat-pcrel.ld -no-check-sections
+LDNXFLATFLAGS = -nostdlib -static
+
+CONFIG_ARCH_BOARD_CUSTOM_NAME_STR := $(subst ",,$(CONFIG_ARCH_BOARD_CUSTOM_NAME))
+LINK_BES_LIBS := $(wildcard $(BOARD_DIR)/configs/$(CONFIG_ARCH_BOARD_CUSTOM_NAME_STR)/libbes*_$(CONFIG_ARCH_BOARD_CUSTOM_NAME_STR).a)
+
+LDFLAGS += -static -nostdlib -X --build-id --whole-archive $(LINK_BES_LIBS) $(BES_SDK_LINK_PATH)/$(BES_SDK_TARGET) --no-whole-archive
+
+include $(BOARD_DIR)/board_cfg.mk
+
+ifeq ($(CONFIG_SERVICES_PNS),y)
+  TMP_PD_NAME := ${shell echo $(CONFIG_PNS_PRODUCT_SERIES) |sed -e "s/\"//g"}
+  PNS_BASE_DIR = $(TOPDIR)/../vendor/xiaomi/miai/pns/thirdparty/$(TMP_PD_NAME)
+  ifeq ($(CONFIG_PNS_LIBVPM_ENABLE),y)
+    ifneq ($(wildcard $(PNS_BASE_DIR)/vpm/libs),)
+      EXTRA_LIBPATHS += -L $(PNS_BASE_DIR)/vpm/libs
+      ifeq ($(CONFIG_ARM_THUMB),y)
+        EXTRA_LIBS += -lvpm_thumb
+      else
+        EXTRA_LIBS += -lvpm
+      endif
+    endif
+  endif
+  ifeq ($(CONFIG_PNS_LIBMDSPEECH_ENABLE),y)
+    ifneq ($(wildcard $(PNS_BASE_DIR)/mdspeech/libs),)
+      EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/pns/libs/mdspeech
+      ifeq ($(CONFIG_ARM_THUMB),y)
+        EXTRA_LIBS += -lmdspeech_thumb
+        EXTRA_LIBS += -liotdcm_thumb
+      else
+        EXTRA_LIBS += -lmdspeech
+        EXTRA_LIBS += -liotdcm
+      endif
+    endif
+  endif
+endif
+
+ifeq ($(CONFIG_KVDB),y)
+ifneq ($(wildcard $(TOPDIR)/../frameworks/kvdb/libs/$(shell echo $(CONFIG_ARCH_CHIP_CUSTOM_NAME))/$(shell echo $(CONFIG_ARCH_BOARD_CUSTOM_XIAOMI_PRODUCT_NAME))/$(shell echo $(CONFIG_ARCH_BOARD_CUSTOM_NAME))/libkvdb.a),)
+EXTRA_LIBPATHS += -L $(TOPDIR)/../frameworks/kvdb/libs/$(CONFIG_ARCH_CHIP_CUSTOM_NAME)/$(CONFIG_ARCH_BOARD_CUSTOM_XIAOMI_PRODUCT_NAME)/$(CONFIG_ARCH_BOARD_CUSTOM_NAME)
+EXTRA_LIBS += -lkvdb
+endif
+endif
+
+ifeq ($(CONFIG_MEDIA),y)
+ifneq ($(wildcard $(TOPDIR)/../frameworks/media/libs/$(shell echo $(CONFIG_ARCH_CHIP_CUSTOM_NAME))/$(shell echo $(CONFIG_ARCH_BOARD_CUSTOM_XIAOMI_PRODUCT_NAME))/$(shell echo $(CONFIG_ARCH_BOARD_CUSTOM_NAME))/libmedia.a),)
+EXTRA_LIBPATHS += -L $(TOPDIR)/../frameworks/media/libs/$(CONFIG_ARCH_CHIP_CUSTOM_NAME)/$(CONFIG_ARCH_BOARD_CUSTOM_XIAOMI_PRODUCT_NAME)/$(CONFIG_ARCH_BOARD_CUSTOM_NAME)
+EXTRA_LIBS += -lmedia
+endif
+endif
+
+ifneq ($(CONFIG_BOOT_RUNFROMFLASH),y)
+OBJCOPYARGS = -R .boot_loader -R .boot_loader_data
+endif
+
+ifeq ($(CONFIG_DSP_USE_PSRAM),y)
+OBJCOPYARGS += -R .psram_text -R .psram_data
+endif
+
+ifeq ($(CONFIG_DSP_IMAGE_COMP),y)
+define POSTBUILD
+	$(Q)echo "Generating: nuttx_a7.bin"; \
+	cp nuttx nuttx_a7.elf; \
+	cp nuttx.map nuttx_a7.map; \
+	$(OBJCOPY) -j .psram_text -j .psram_data -O binary nuttx_a7.elf nuttx_a7_psram_xip.bin; \
+	$(OBJCOPY) -j .boot_loader -j .boot_loader_data -O binary nuttx_a7.elf nuttx_a7_bl.bin; \
+	lzma -z -k -f -9 nuttx_a7_bl.bin; \
+	stat -c %s nuttx_a7_bl.bin.lzma | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx_a7_bl.bin.lzma > nuttx_a7_bl.bin.tmp; \
+	lzma -z -k -f -9 nuttx.bin; \
+	stat -c %s nuttx.bin.lzma | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx.bin.lzma > nuttx_a7.bin.tmp; \
+	stat -c %s nuttx_a7_bl.bin.lzma | xargs -i expr 4 - {} % 4 | xargs -i xxd -ps -len {} /dev/zero | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat nuttx_a7_bl.bin.tmp tmp.bin nuttx_a7.bin.tmp  > nuttx_a7.bin.tmp2; \
+	lzma -z -k -f -9 nuttx_a7_psram_xip.bin; \
+	stat -c %s nuttx_a7_psram_xip.bin.lzma | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx_a7_psram_xip.bin.lzma > nuttx_a7_psram_xip.bin; \
+	stat -c %s nuttx_a7.bin.tmp2 | xargs -i expr 4 - {} % 4 | xargs -i xxd -ps -len {} /dev/zero | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat nuttx_a7.bin.tmp2 tmp.bin nuttx_a7_psram_xip.bin > nuttx_a7.bin; \
+	rm tmp.bin *.bin.tmp* nuttx_a7_bl.bin nuttx_a7_psram_xip.bin *.lzma;
+
+endef
+else
+ifeq ($(CONFIG_BOOT_RUNFROMFLASH),y)
+define POSTBUILD
+	$(Q)echo "Generating: nuttx_a7.bin"; \
+	cp nuttx nuttx_a7.elf; \
+	cp nuttx.map nuttx_a7.map; \
+	cp nuttx.bin nuttx_a7.bin; \
+	$(OBJCOPY) -j .psram_text -j .psram_data -O binary nuttx_a7.elf nuttx_a7_psram_xip_tmp.bin; \
+	stat -c %s nuttx_a7_psram_xip_tmp.bin | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx_a7_psram_xip_tmp.bin > nuttx_a7_psram_xip.bin; \
+	rm tmp.bin nuttx_a7_psram_xip_tmp.bin;
+endef
+else
+define POSTBUILD
+	$(Q)echo "Generating: nuttx_a7.bin"; \
+	cp nuttx nuttx_a7.elf; \
+	cp nuttx.map nuttx_a7.map; \
+	$(OBJCOPY) -j .boot_loader -j .boot_loader_data -O binary nuttx_a7.elf nuttx_a7_bl.bin; \
+	stat -c %s nuttx_a7_bl.bin | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx_a7_bl.bin > nuttx_a7_bl.bin.tmp; \
+	stat -c %s nuttx.bin | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx.bin > nuttx_a7.bin.tmp; \
+	stat -c %s nuttx_a7_bl.bin | xargs -i expr 4 - {} % 4 | xargs -i xxd -ps -len {} /dev/zero | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat nuttx_a7_bl.bin.tmp tmp.bin nuttx_a7.bin.tmp  > nuttx_a7.bin.tmp2; \
+	$(OBJCOPY) -j .psram_text -j .psram_data -O binary nuttx_a7.elf nuttx_a7_psram_xip_tmp.bin; \
+	stat -c %s nuttx_a7_psram_xip_tmp.bin | tr -d '\n' | xargs -i printf "%08x" {} | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat tmp.bin nuttx_a7_psram_xip_tmp.bin > nuttx_a7_psram_xip.bin; \
+	stat -c %s nuttx_a7.bin.tmp2 | xargs -i expr 4 - {} % 4 | xargs -i xxd -ps -len {} /dev/zero | \
+	xargs echo -i {} | xxd -r -ps > tmp.bin; \
+	cat nuttx_a7.bin.tmp2 tmp.bin nuttx_a7_psram_xip.bin > nuttx_a7.bin; \
+	rm *tmp.bin *.bin.tmp* nuttx_a7_bl.bin nuttx_a7_psram_xip.bin;
+
+endef
+endif
+endif
+

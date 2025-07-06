@@ -1,0 +1,131 @@
+############################################################################
+# boards/arm/bes/bes2003_ep/src/Makefile
+#
+#   Copyright (C) 2019 Gregory Nutt. All rights reserved.
+#   Author: Gregory Nutt <gnutt@nuttx.org>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+# 3. Neither the name NuttX nor the names of its contributors may be
+#    used to endorse or promote products derived from this software
+#    without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+############################################################################
+
+include $(TOPDIR)/Make.defs
+
+CSRCS += ap.c audio.c ota.c tee.c
+
+ifeq ($(CONFIG_ARCH_BOARD_CUSTOM_BES2003_EVB),y)
+BOARD_CSRCS +=  board_bes2003evb.c
+endif
+
+ifeq ($(CONFIG_ARCH_BOARD_CUSTOM_XIAOMI_K03),y)
+CSRCS +=  board_xiaomi_k03.c
+endif
+
+ifeq ($(CONFIG_ARCH_BOARD_CUSTOM_XIAOMI_86V1),y)
+CSRCS +=  board_xiaomi_86v1.c
+endif
+
+ifeq ($(CONFIG_RPTUN),y)
+BOARD_CSRCS += bes_global_shmem.c
+endif
+
+RCSRCS  = etc/init.d/rc.sysinit etc/init.d/rcS
+RCRAWS += etc/build.prop
+
+ifeq ($(CONFIG_XMSDEMO_LAUNCHER),y)
+RCRAWS += etc/package.cfg
+RCRAWS += etc/app
+endif
+
+ifeq ($(CONFIG_SERVICES_PNS),y)
+  PNS_BASE_DIR = ${TOPDIR}/../vendor/xiaomi/miai/pns/thirdparty/$(CONFIG_PNS_PRODUCT_SERIES)
+  ${shell rm -rf etc/pns}
+  ifneq ($(CONFIG_PNS_LIBVPM_ENABLE),)
+    ${shell mkdir -p board/etc/pns/configs/vpm}
+    ${shell cp -r ${PNS_BASE_DIR}/vpm/configs/* board/etc/pns/configs/vpm}
+    RCRAWS += etc/pns/configs/vpm
+  endif
+  ifneq ($(CONFIG_PNS_LIBMDSPEECH_ENABLE),)
+    ${shell mkdir -p etc/pns/configs/mdspeech}
+    ${shell cp -r ${PNS_BASE_DIR}/mdspeech/configs/* etc/pns/configs/mdspeech}
+    RCRAWS += etc/pns/configs/mdspeech
+  endif
+endif
+
+ifeq ($(CONFIG_GEN_RECOVERY_BIN),)
+RCRAWS += etc/init.d/bt_stack.conf
+RCRAWS += etc/init.d/bt_did.conf
+RCRAWS += etc/ssl/curl/ca-certificates.crt
+RCRAWS += etc/rsa_public_key.pem
+RCRAWS += etc/zoneinfo
+endif
+ifeq ($(CONFIG_SERVICES_MICO_ALARM),y)
+RCRAWS += etc/workday
+endif
+ifeq ($(CONFIG_BES2003_OTA),y)
+RCRAWS += etc/recovery_reset.sh
+endif
+
+ifeq ($(CONFIG_OTA_VERIFY),y)
+RCRAWS += etc/certificate.der
+endif
+
+ifeq ($(CONFIG_BES2003_AP),y)
+RCRAWS += etc/build.prop
+endif
+
+ifeq ($(CONFIG_LV_USE_FFMPEG),y)
+RCRAWS += etc/media
+RCRAWS += etc/media/birds.mp4
+endif
+
+ifeq ($(CONFIG_MEDIA_FOCUS),y)
+  RCRAWS += etc/media/media_focus.conf
+endif
+
+ifeq ($(CONFIG_TA_HELLO_WORLD),y)
+RCRAWS += etc/ta/00F2AA8A5024E411ABE20002A5D5C51B
+endif
+ifeq ($(CONFIG_TA_TRIAD),y)
+RCRAWS += etc/ta/1C6455C967DD255194BE7F9DCD557595
+endif
+ifeq ($(CONFIG_TA_ALIPAY),y)
+RCRAWS += etc/ta/F1490647578C565BA2C321FD51DC6791
+endif
+ifeq ($(CONFIG_TA_WXCODEPAY),y)
+RCRAWS += etc/ta/4EBA9EA8ACF42751AD93A5A4F03E1A67
+endif
+ifeq ($(CONFIG_TA_COMSST),y)
+RCRAWS += etc/ta/F617ACC99AE5405985D05056DF6BF28B
+endif
+ifeq ($(CONFIG_TA_PIN),y)
+RCRAWS += etc/ta/EE571882BE621355ADAB1B7F23DEFAA6
+endif
+
+DEPPATH += --dep-path board
+VPATH += :board
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)board)
