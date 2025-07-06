@@ -1,0 +1,248 @@
+############################################################################
+# boards/best2003_ep/scripts/Make.defs
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.  The
+# ASF licenses this file to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance with the
+# License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+############################################################################
+
+BES_SDK_TARGET := lib$(CONFIG_ARCH_BOARD).a
+BES_SDK_BUILDIR := $(realpath $(TOPDIR)/../vendor/bes/$(shell echo ${CONFIG_BES_DDK_DIR}))
+
+export BES_SDK_FLASGS := -DCHIP_BEST2003 -I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/hal \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/cmsis/inc \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/services/multimedia/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/services/multimedia/audio/process/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/services/nv_section/include/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/services/nv_section/aud_section/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/multimedia/inc/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/multimedia/inc/audio/process/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/drivers/ \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/platform/drivers/graphic/lcdc \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/net \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/net/wifi \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/net/wifi/wifi_p2p \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/include/rtos/nuttx \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/utils/boot_struct \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/utils/heap \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/utils/hwtimer_list \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/utils/boot_struct \
+	-I$(TOPDIR)/../vendor/bes/${CONFIG_BES_DDK_DIR}/rtos/nuttx
+
+ifeq ($(CONFIG_ARCH_TRUSTZONE_NONSECURE),y)
+BES_SDK_FLASGS += -DARM_CMNS
+endif
+ifeq ($(CONFIG_ARCH_TRUSTZONE_SECURE),y)
+BES_SDK_FLASGS += -DARM_CMSE
+endif
+
+include ${TOPDIR}/arch/arm/src/armv8-m/Toolchain.defs
+
+CONFIG_ARCH_BOARD_CUSTOM_NAME_STR := $(subst ",,$(CONFIG_ARCH_BOARD_CUSTOM_NAME))
+
+BES_SDK_LINK_PATH ?= $(BOARD_DIR)/configs/$(CONFIG_ARCH_BOARD_CUSTOM_NAME_STR)
+ARCHSCRIPT = $(BES_SDK_LINK_PATH)/$(LDSCRIPT)
+
+ARCHCFLAGS += -nostdlib -pipe
+ARCHCXXFLAGS += -std=c++20 -pipe
+ARCHPICFLAGS = -fpic -msingle-pic-base -mpic-register=r10
+
+CFLAGS := $(ARCHCFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+CPICFLAGS = $(ARCHPICFLAGS) $(CFLAGS)
+CXXFLAGS := $(ARCHCXXFLAGS) $(ARCHOPTIMIZATION) $(ARCHCPUFLAGS) $(ARCHXXINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+CXXPICFLAGS = $(ARCHPICFLAGS) $(CXXFLAGS)
+CPPFLAGS := $(ARCHINCLUDES) $(ARCHDEFINES) $(EXTRAFLAGS)
+AFLAGS = $(CFLAGS) -D__ASSEMBLY__
+
+NXFLATLDFLAGS1 = -r -d -warn-common
+NXFLATLDFLAGS2 = $(NXFLATLDFLAGS1) -T$(TOPDIR)/binfmt/libnxflat/gnu-nxflat-pcrel.ld -no-check-sections
+LDNXFLATFLAGS = -nostdlib -static
+
+LINK_BES_LIBS := $(wildcard $(BOARD_DIR)/configs/$(CONFIG_ARCH_BOARD_CUSTOM_NAME_STR)/libbes*_$(CONFIG_ARCH_BOARD_CUSTOM_NAME_STR).a)
+
+LDFLAGS += $(BES_ENTRY) -static -nostdlib -X --build-id --whole-archive $(LINK_BES_LIBS) $(BES_SDK_LINK_PATH)/$(BES_SDK_TARGET) --no-whole-archive
+
+include $(BOARD_DIR)/board_cfg.mk
+
+ifeq ($(CONFIG_ARCH_TRUSTZONE_SECURE),y)
+LDFLAGS += --cmse-implib --out-implib=$(TOPDIR)$(DELIM)nuttx_tee.se
+endif
+
+ifeq ($(CONFIG_ARCH_TRUSTZONE_NONSECURE),y)
+EXTRA_LIBS     += $(TOPDIR)$(DELIM)nuttx_tee.se
+endif
+
+
+ifeq ($(CONFIG_XIAOMI_SPEECH_SERVICE_LIB_AP),y)
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/speech_service/ap
+EXTRA_LIBS += -lxss_ap
+endif
+
+ifeq ($(CONFIG_LIB_XIAOMI_SPEECH_SERVICE_AP),y)
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/aivs_mico_lab/speech_service
+EXTRA_LIBS     += -lxiaomi_speech_service_ap
+endif
+
+ifeq ($(CONFIG_AIVS_PNS_PROTOCAL_LIB),y)
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/aivs_mico_lab/protocal
+EXTRA_LIBS     += -lspeech_service_protocol
+endif
+
+ifeq ($(CONFIG_AIVS_DEMO),y)
+EXTRA_LIBS += -laivs
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/bes/apps/aivs_demo/aivs/lib
+endif
+
+ifeq ($(CONFIG_BRAIN_DEMO),y)
+EXTRA_LIBS += -lmibrainsdk
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/bes/apps/brain_demo/aivs/lib/
+endif
+
+ifeq ($(CONFIG_MIBRAIN_SDK_STATIC_LIB),y)
+EXTRA_LIBS += -lmibrainsdk
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/mibrainsdk
+endif
+
+ifeq ($(CONFIG_NNG_STATIC_LIB),y)
+EXTRA_LIBS += -lnng
+EXTRA_LIBPATHS += -L $(TOPDIR)/../external/nng
+endif
+
+ifeq ($(CONFIG_MICO_NX_BASE_STATIC_LIB),y)
+EXTRA_LIBS += -lnxbase
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/mico_common/nx/
+endif
+
+ifeq ($(CONFIG_MICO_OTA_STATIC_LIB),y)
+EXTRA_LIBS += -lmicoupdater
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/updater/common/
+endif
+
+ifeq ($(CONFIG_MICO_STATPOINT_STATIC_LIB),y)
+EXTRA_LIBS += -lmicostatpoint
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/statpoint/common/
+endif
+
+ifeq ($(CONFIG_MICO_LOG_STATIC_LIB),y)
+EXTRA_LIBS += -lmicolog
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/mico_log/common/
+endif
+
+ifeq ($(CONFIG_MICO_COMMON_STATIC_LIB),y)
+EXTRA_LIBS += -lmicommon
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/mico_common/lib/
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_ALARM_STATIC_LIB),y)
+EXTRA_LIBS += -lmicoalarm
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/alarm/common/lib
+endif
+
+ifeq ($(CONFIG_MICO_AMS_STATIC_LIB),y)
+EXTRA_LIBS += -lmicoams
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/mico_ams/common/lib
+endif
+
+ifeq ($(CONFIG_SERVICES_MIOT_MICO_BRIDGE_STATIC_LIB),y)
+EXTRA_LIBS += -lmicobridge
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/miot_mico_bridge/common/lib
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_MISC_STATIC_LIB),y)
+EXTRA_LIBS += -lmicomisc
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/mico_misc/instance/
+endif
+
+ifneq ($(CONFIG_MICO_NX_BASE),)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/nxipc/lib/libnxbase.a),)
+EXTRA_LIBS += -lnxbase
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/nxipc/lib
+endif
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_UPGRADE),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/updater/lib/libmicoupdater.a),)
+EXTRA_LIBS += -lmicoupdater
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/updater/lib
+endif
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_STATPOINT),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/statpoint/lib/libmicostatpoint.a),)
+EXTRA_LIBS += -lmicostatpoint
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/statpoint/lib
+endif
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_LOG),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_log/lib/libmicolog.a),)
+EXTRA_LIBS += -lmicolog
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_log/lib
+endif
+endif
+
+ifeq ($(CONFIG_SERVICES_MIOT_MICO_BRIDGE),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/miot_mico_bridge/lib/libmicobridge.a),)
+EXTRA_LIBS += -lmicobridge
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/miot_mico_bridge/lib
+endif
+
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_common/lib/libmicommon.a),)
+EXTRA_LIBS += -lmicommon
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_common/lib
+endif
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_ALARM),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/alarm/lib/libmicoalarm.a),)
+EXTRA_LIBS += -lmicoalarm
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/alarm/lib
+endif
+endif
+
+ifeq ($(CONFIG_MICO_AMS),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_ams/lib/libmicoams.a),)
+EXTRA_LIBS += -lmicoams
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_ams/lib
+endif
+endif
+
+ifeq ($(CONFIG_MIBRAIN_SDK),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/mibrainsdk/lib/libmibrainsdk.a),)
+EXTRA_LIBS += -lmibrainsdk
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/mibrainsdk/lib
+endif
+endif
+
+ifeq ($(CONFIG_SERVICES_MICO_MISC),y)
+ifneq ($(wildcard $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_misc/lib/libmicomisc.a),)
+EXTRA_LIBS += -lmicomisc
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miai/libs/mico_misc/lib/
+endif
+endif
+
+ifneq ($(findstring y,$(CONFIG_BRCM_WIFI_RF_TEST)_$(CONFIG_MIWEAR_WIFI)),)
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/miwear/wifi/lib
+EXTRA_LIBS     += -lmhd_test_43013c1
+endif
+
+
+EXTRA_LIBS += $(wildcard $(shell readlink -f $(TOPDIR)/$(CONFIG_ARCH_BOARD_CUSTOM_DIR)/libs/$(CONFIG_ARCH_BOARD_CUSTOM_NAME))/*.a)
+
+LDELFFLAGS = -r -e main
+LDELFFLAGS += -T $(call CONVERT_PATH,$(TOPDIR)/binfmt/libelf/gnu-elf.ld)
+
+SECURE_BOOT_TOOLS = ${TOPDIR}/../vendor/bes/framework/services/utils/secure_boot/tools

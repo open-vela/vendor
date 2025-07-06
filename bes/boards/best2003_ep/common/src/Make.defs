@@ -1,0 +1,277 @@
+#/***************************************************************************
+# *
+# * Copyright 2015-2022 BES.
+# * All rights reserved. All unpublished rights reserved.
+# *
+# * No part of this work may be used or reproduced in any form or by any
+# * means, or stored in a database or retrieval system, without prior written
+# * permission of BES.
+# *
+# * Use of this work is governed by a license granted by BES.
+# * This work contains confidential and proprietary information of
+# * BES. which is protected by copyright, trade secret,
+# * trademark and other intellectual property rights.
+# *
+# ****************************************************************************/
+
+ifeq ($(CONFIG_ARCH_LEDS),y)
+#BOARD_CSRCS += bes_autoleds.c
+else ifeq ($(CONFIG_USERLED),y)
+BOARD_CSRCS += bes_userleds.c
+endif
+
+ifeq ($(CONFIG_PWM),y)
+BOARD_CSRCS += bes_pwm.c
+endif
+
+ifeq ($(CONFIG_BES_ACCLIS2DH),y)
+BOARD_CSRCS +=  bes_acclis2dh.c
+endif
+
+ifeq ($(CONFIG_BES_SPI),y)
+BOARD_CSRCS +=  bes_spi.c
+BOARD_CSRCS +=  bes_board_spi_slave.c
+BOARD_CSRCS +=  bes_board_spi_dbgslave.c
+endif
+
+ifeq ($(CONFIG_VIDEO),y)
+BOARD_CSRCS +=  bes_camera_common.c
+
+ifeq ($(CONFIG_BES_CAMSPI),y)
+BOARD_CSRCS +=  bes_camspi_common.c
+
+ifeq ($(CONFIG_BES_CAMERA_GC032A),y)
+BOARD_CSRCS +=  bes_camspi_gc032a.c
+endif
+endif
+
+ifeq ($(CONFIG_BES_CAMCSI),y)
+BOARD_CSRCS +=  bes_camcsi_common.c
+
+ifeq ($(CONFIG_BES_CAMERA_GC2145),y)
+BOARD_CSRCS +=  bes_camcsi_gc2145.c
+endif
+endif
+endif
+
+ifeq ($(CONFIG_POWER),y)
+BOARD_CSRCS +=  bes_power.c
+endif
+
+ifeq ($(CONFIG_BES_BAT_ID),y)
+BOARD_CSRCS +=  bes_bat_id.c
+endif
+
+ifeq ($(CONFIG_BES_BAT_VOLTAGE),y)
+BOARD_CSRCS +=  bes_bat_voltage.c
+endif
+
+ifeq ($(CONFIG_RPMSG_GPIO_CLIENT),y)
+BOARD_CSRCS += ioe_rpmsg.c
+endif
+
+ifeq ($(CONFIG_I2C_RPMSG_CLIENT),y)
+BOARD_CSRCS += bes_rpmsg_i2c.c
+endif
+
+ifeq ($(CONFIG_AUDIO_RPMSG_CLIENT),y)
+ifneq ($(CONFIG_ARCH_CHIP_BESHIFI4),y)
+BOARD_CSRCS += rpmsg_audio.c
+endif
+endif
+
+ifeq ($(CONFIG_BOARDCTL),y)
+#BOARD_CSRCS += bes_appinit.c
+endif
+
+ifeq ($(CONFIG_BES_HAVE_RGBLED),y)
+BOARD_CSRCS +=  bes_rgbled.c
+endif
+
+ifeq ($(CONFIG_BES_ADC_BUTTONS),y)
+BOARD_CSRCS +=  bes_adc_buttons.c
+endif
+
+ifeq ($(CONFIG_BES_TEMP_INTERNAL),y)
+BOARD_CSRCS +=  bes_temp_internal.c
+endif
+
+ifeq ($(CONFIG_BES_TEMP_NTC_SKIN),y)
+BOARD_CSRCS +=  bes_temp_ntc_skin.c
+endif
+
+ifeq ($(CONFIG_BES_TEMP_NTC_SHELL),y)
+BOARD_CSRCS +=  bes_temp_ntc_shell.c
+endif
+
+ifeq ($(CONFIG_BES_TEMP_NTC_SUB),y)
+BOARD_CSRCS +=  bes_temp_ntc_sub.c
+endif
+
+ifeq ($(CONFIG_BES_TP_TMA525C),y)
+BOARD_CSRCS +=  tma525c.c bes_tp_tma525c.c
+endif
+
+ifeq ($(CONFIG_BES_TP_CHSC6540),y)
+BOARD_CSRCS +=  bes_tp_chsc6540.c
+BOARD_CSRCS += bes_rpmsg_i2c.c
+endif
+
+ifeq ($(CONFIG_BES_TP_CST3240),y)
+BOARD_CSRCS += bes_tp_cst3240.c tp_cst3240.c
+endif
+
+ifeq ($(CONFIG_VIDEO_FB),y)
+BOARD_CSRCS += bes_lcdc.c
+BOARD_CSRCS += bes_lcdc_cmds.c
+BOARD_CSRCS += bes_lcdc_rotate.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_JT4007),y)
+BOARD_CSRCS += board_lcd_jt4007.c
+BOARD_CSRCS += bes_lcdc_jt4007.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_JD9165A),y)
+BOARD_CSRCS += board_lcd_jd9165a.c
+BOARD_CSRCS += bes_lcdc_jd9165a.c
+ifeq ($(CONFIG_BES_TP_IST415X),y)
+BOARD_CSRCS += bes_tp_ist415x.c tp_ist415x.c
+endif
+endif
+
+ifeq ($(CONFIG_BES_LCD_RM69090),y)
+BOARD_CSRCS +=  board_lcd_rm69090.c
+BOARD_CSRCS += bes_lcdc_rm69090.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_RM69330),y)
+BOARD_CSRCS +=  board_lcd_rm69330.c
+BOARD_CSRCS += bes_lcdc_rm69330.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_A064),y)
+BOARD_CSRCS +=  board_lcd_a064.c
+BOARD_CSRCS += bes_lcdc_a064.c
+ifeq ($(CONFIG_BES_TP_A064_FTS),y)
+BOARD_CSRCS += bes_tp_a064.c tp_a064.c
+endif
+endif
+
+ifeq ($(CONFIG_BES_LCD_HX8394),y)
+BOARD_CSRCS +=  board_lcd_hx8394.c
+BOARD_CSRCS += bes_lcdc_hx8394.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_ST7703),y)
+BOARD_CSRCS +=  board_lcd_st7703.c
+BOARD_CSRCS += bes_lcdc_st7703.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_ST7701S),y)
+BOARD_CSRCS +=  board_lcd_st7701s.c
+BOARD_CSRCS +=  lcd_st7701s.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_ST7796U),y)
+BOARD_CSRCS +=  board_lcd_st7796u.c
+BOARD_CSRCS +=  lcd_st7796u.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_ST7785M),y)
+BOARD_CSRCS +=  board_lcd_st7785m.c
+BOARD_CSRCS +=  lcd_st7785m.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_ST7797),y)
+BOARD_CSRCS +=  board_lcd_st7797.c
+BOARD_CSRCS +=  lcd_st7797.c
+endif
+
+ifeq ($(CONFIG_BES_LCD_GC9503NP),y)
+BOARD_CSRCS +=  board_lcd_gc9503np.c
+ifeq ($(CONFIG_ARCH_BOARD_CUSTOM_PRODUCT_NAME), "dx2")
+BOARD_CSRCS += bes_lcdc_gc9503np_dx2.c
+else
+BOARD_CSRCS += bes_lcdc_gc9503np.c
+endif
+endif
+
+ifeq ($(CONFIG_BES_EMMC),y)
+BOARD_CSRCS +=  board_bes_emmc.c
+endif
+
+ifeq ($(CONFIG_BES_EMMC_DEV),y)
+BOARD_CSRCS +=  bes_emmcdev.c
+endif
+
+ifeq ($(CONFIG_IEEE80211_BROADCOM_BCM4301X),y)
+BOARD_CSRCS +=  board_wlan_bcm4301x.c
+endif
+
+ifeq ($(CONFIG_BES_NAND_FLASH),y)
+BOARD_CSRCS +=  board_bes_nand.c
+endif
+
+ifeq ($(CONFIG_RELAY_GPIO),y)
+BOARD_CSRCS += board_relays_gpio.c
+endif
+
+ifneq ($(CONFIG_GEN_DSP_BIN),y)
+ifeq ($(CONFIG_BES_BOARD_START_FILE_CM),y)
+BOARD_CSRCS += bes_start_cm.c
+endif
+
+ifeq ($(CONFIG_BES_BOARD_START_FILE_CA),y)
+BOARD_CSRCS += bes_start_ca.c
+endif
+
+ifeq ($(CONFIG_BES_BOARD_START_FILE_CMCP),y)
+BOARD_CSRCS += bes_start_cmcp.c
+endif
+
+ifeq ($(CONFIG_BES_BOARD_START_FILE_CHIP_START),y)
+endif
+endif
+
+ifeq ($(CONFIG_USBDEV),y)
+BOARD_CSRCS += bes_composite.c
+endif
+
+ifeq ($(CONFIG_BES_AUDIO_CLIENT), y)
+BOARD_CSRCS += bes_audio_client.c
+endif
+
+ifeq ($(CONFIG_LV_USE_DRAW_BES_VGLITE),y)
+BOARD_CSRCS += lv_draw_buf_vglite.c
+BOARD_CSRCS += lv_draw_vglite_border.c
+BOARD_CSRCS += lv_draw_vglite.c
+BOARD_CSRCS += lv_draw_vglite_label.c
+BOARD_CSRCS += lv_draw_vglite_line.c
+BOARD_CSRCS += lv_draw_vglite_triangle.c
+BOARD_CSRCS += lv_vglite_buf.c
+BOARD_CSRCS += lv_vglite_freetype.c
+BOARD_CSRCS += lv_vglite_matrix.c
+BOARD_CSRCS += lv_vglite_path.c
+BOARD_CSRCS += lv_vglite_utils.c
+BOARD_CSRCS += lv_draw_vglite_arc.c
+BOARD_CSRCS += lv_draw_vglite_box_shadow.c
+BOARD_CSRCS += lv_draw_vglite_fill.c
+BOARD_CSRCS += lv_draw_vglite_img.c
+BOARD_CSRCS += lv_draw_vglite_layer.c
+BOARD_CSRCS += lv_draw_vglite_mask_rect.c
+BOARD_CSRCS += lv_draw_vglite_vector.c
+endif
+
+DEPPATH += --dep-path src
+VPATH += :src
+DEPPATH += --dep-path src/lv_vglite
+VPATH += :src/lv_vglite
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)src)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)drivers$(DELIM)platform$(DELIM)sensors)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)drivers$(DELIM)platform$(DELIM)include)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)drivers$(DELIM)platform$(DELIM)storage)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)..$(DELIM)vendor$(DELIM)bes$(DELIM)framework$(DELIM)services$(DELIM)platform$(DELIM)drivers$(DELIM)graphic$(DELIM)lcdc)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)..$(DELIM)vendor$(DELIM)bes$(DELIM)framework$(DELIM)services$(DELIM)platform$(DELIM)drivers$(DELIM)graphic$(DELIM)gpu)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)..$(DELIM)vendor$(DELIM)bes$(DELIM)framework$(DELIM)services$(DELIM)platform$(DELIM)drivers$(DELIM)graphic$(DELIM)gpu$(DELIM)drv$(DELIM)vglite$(DELIM)inc)
+CFLAGS += $(shell $(INCDIR) "$(CC)" $(TOPDIR)$(DELIM)..$(DELIM)apps$(DELIM)graphics$(DELIM)lvgl$(DELIM)lvgl)

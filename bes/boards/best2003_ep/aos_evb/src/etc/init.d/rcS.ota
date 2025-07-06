@@ -1,0 +1,87 @@
+/****************************************************************************
+ * vendor/bes/boards/best1600_ep/src/etc/init.d/rcS.ota
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.  The
+ * ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ ****************************************************************************/
+
+mount -t fatfs /dev/data /data
+if [ $? -ne 0 ]
+then
+    echo "mount /dev/data failed, will reboot"
+    reboot 0
+fi
+
+kvdbd &
+
+echo -e -n "\xff\xff\xff\xff" > /dev/ap
+
+if [ ! -e /data/ota.zip ]
+then
+    echo "ota.zip doesn't exist, will reboot to the old system"
+
+    echo -e -n "\x1c\xec\x57\xbe" > /dev/ap
+    reboot 0
+fi
+
+setprop ota.version.current 0
+
+echo "verify ota.zip"
+time "verify /data/ota.zip /etc/certificate.der"
+if [ $? -ne 0 ]
+then
+    echo "verify ota.zip failed, will reboot to the old system"
+
+    rm /data/ota.zip
+    echo -e -n "\x1c\xec\x57\xbe" > /dev/ap
+    reboot 0
+fi
+
+mkdir /tmp/ota_tmp
+echo "mount ota.zip"
+mount -t zipfs -o /data/ota.zip /ota
+if [ $? -ne 0 ]
+then
+    echo "mount /data/ota.zip failed, will reboot to the old system"
+
+    rm /data/ota.zip
+    echo -e -n "\x1c\xec\x57\xbe" > /dev/ap
+    reboot 0
+fi
+
+echo "apply ota.sh"
+sh /ota/ota.sh
+echo "run ota.sh done"
+
+set ota_progress `getprop ota.progress.current`
+
+if [ $ota_progress == 100 ]
+then
+    echo "ota success"
+
+    if [ -e /ota/vela_ota.bin ]
+    then
+        echo "ota upgrade,will swich a\b!"
+        echo -e -n "\x5a\x5a\x5a\x5a" > /dev/ota_info
+    fi
+
+fi
+
+umount /ota
+rm /data/ota.zip
+echo -e -n "\x1c\xec\x57\xbe" > /dev/ap
+
+reboot 0

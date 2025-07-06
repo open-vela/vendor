@@ -1,0 +1,2171 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+if ARCH_CHIP_CUSTOM
+
+# Chip Selection
+
+choice
+	prompt "BES Chip Selection"
+	default ARCH_CHIP_BES1302
+
+config ARCH_CHIP_BES1300
+	select ARCH_CORTEXM4
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	bool "BES1300"
+	---help---
+		Cortex-M4F
+
+config ARCH_CHIP_BES1302
+	select ARCH_CORTEXM4
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	bool "BES1302"
+	---help---
+		Dual Cortex-M4F
+
+config ARCH_CHIP_BES1305
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1305"
+	---help---
+		Dual Cortex-M33
+
+config ARCH_CHIP_BES1306
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1306"
+	---help---
+		Dual Cortex-M33
+
+config ARCH_CHIP_BES1306P
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1306P"
+	---help---
+		Dual Cortex-M33
+
+config ARCH_CHIP_BES1501P
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1501P"
+	---help---
+		Dual Cortex-M33 + Sensor MCU + NPU
+
+config ARCH_CHIP_BES1502X
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1502X"
+	---help---
+		Dual Cortex-M33 + Sensor MCU + NPU
+
+config ARCH_CHIP_BES1502P
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select FB_UPDATE
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1502P"
+	---help---
+		Dual Cortex-M33 + Sensor MCU + NPU
+
+config ARCH_CHIP_BES1503
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1503"
+	---help---
+		Dual Cortex-M33 + NPU
+
+config ARCH_CHIP_BES1503P
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	bool "BES1503P"
+	---help---
+		Dual Cortex-M33 + NPU
+
+config ARCH_CHIP_BES1600_BTH
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select BUTTON_USE_GPIO
+	select BTH_USE_SYS_GPIO
+	bool "BES1600_BTH"
+	---help---
+		Dual Cortex-M33 + Sensor MCU + NPU
+
+config ARCH_CHIP_BES1600_SENS
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select BUTTON_USE_GPIO
+	bool "BES1600_SENS"
+	---help---
+		Dual Cortex-M33 + Sensor MCU + NPU
+
+config ARCH_CHIP_BES1600
+	select ARCH_CORTEXM55
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MVE
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_HAVE_POWEROFF
+	select ARCH_HAVE_TRUSTZONE   if TZ_ENABLE
+	select ARMV8M_HAVE_ICACHE
+	select ARMV8M_HAVE_DCACHE
+	select BES_HAVE_TRNG
+	select ARCH_HAVE_I2CRESET
+	select BTH_USE_SYS_GPIO
+	select USB_SYNC_CACHE
+	bool "BES1600"
+	---help---
+		Cortex-M55
+
+config ARCH_CHIP_BES1700_BTH
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select BTH_USE_SYS_GPIO
+	bool "BES1700_BTH"
+	---help---
+		Cortex-M33
+
+config ARCH_CHIP_BES1700
+	select ARCH_CORTEXM55
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MVE
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_HAVE_POWEROFF
+	select ARCH_HAVE_SDIO
+	select ARCH_HAVE_TRUSTZONE   if TZ_ENABLE
+	select ARMV8M_HAVE_ICACHE
+	select ARMV8M_HAVE_DCACHE
+	select BES_HAVE_TRNG
+	select ARCH_HAVE_I2CRESET
+	select BTH_USE_SYS_GPIO
+	bool "BES1700"
+	---help---
+		Cortex-M55
+
+config ARCH_CHIP_BES3601
+	select ARCH_CORTEXM55
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_SDIO
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MVE
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_HAVE_POWEROFF
+	select ARCH_HAVE_TRUSTZONE   if TZ_ENABLE
+	select ARMV8M_HAVE_ICACHE
+	select ARMV8M_HAVE_DCACHE
+	select BES_HAVE_TRNG
+	select ARCH_HAVE_I2CRESET
+	select BTH_USE_SYS_GPIO
+	bool "BES3601"
+	---help---
+		Cortex-M55
+
+config ARCH_CHIP_BES2001
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_GLOBAL_IRQDISABLE
+	select ARCH_HAVE_POWEROFF
+	bool "BES2001"
+	---help---
+		Dual Cortex-M33 + Dual A7
+
+config ARCH_CHIP_BES2003
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_GLOBAL_IRQDISABLE
+	select ARCH_HAVE_POWEROFF
+	select BES_HAVE_TRNG
+	select ARCH_HAVE_TRUSTZONE   if TZ_ENABLE
+	bool "BES2003"
+	---help---
+		Dual Cortex-M33 + Dual A7
+
+config ARCH_CHIP_BES2005
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_GLOBAL_IRQDISABLE
+	select ARCH_HAVE_POWEROFF
+	select BES_HAVE_TRNG
+	select ARCH_HAVE_TRUSTZONE   if TZ_ENABLE
+	bool "BES2005"
+	---help---
+		Dual Cortex-M33 + Dual A7
+
+config ARCH_CHIP_BES2009
+	select ARCH_CORTEXM33
+	select ARM_HAVE_DSP
+	select ARCH_HAVE_FPU
+	select ARCH_HAVE_MPU
+	select ARCH_HAVE_PROGMEM
+	select ARCH_HAVE_PROGMEM_READ
+	select ARM_HAVE_MPU_UNIFIED
+	select ARCH_HAVE_TICKLESS
+	select ARCH_HAVE_MULTICPU
+	select ARCH_HAVE_HEAPCHECK
+	select ARCH_GLOBAL_IRQDISABLE
+	select ARCH_HAVE_POWEROFF
+	select ARCH_HAVE_SDIO
+	select BES_HAVE_TRNG
+	select ARCH_HAVE_TRUSTZONE   if TZ_ENABLE
+	bool "BES2009"
+	---help---
+		Dual Cortex-M33 + Duad A55
+
+endchoice # BES130 Chip Selection
+
+config BES_DDK_DIR
+	string "Bes Device Development Kit Dir"
+	default "framework/services"
+	---help---
+		This is a name for the BES DDK Source code Dir.
+
+# Chip Capabilities
+config BES_CHIP_SIMU
+    bool "Enable Chip Simulator Config"
+    default n
+
+config BES_SECOND_FLASH
+    bool "Use Second Flash"
+    default n
+
+config USE_BES_BT_STACK
+    bool "Use BES native bt and ble stack"
+    default n
+
+if USE_BES_BT_STACK
+config BLE_BRIDGE_MODE
+    bool "Use BLE bridge mode"
+    select BT_QUIRK_NO_RESET
+    default y
+endif
+
+config BES_BQBTEST_ENABLE
+    bool "BQB test enable"
+    depends on ARCH_CHIP_DEBUG_H
+    default n
+
+config WITHOUT_OS
+    bool "Without Os, not Start Kernel"
+    default n
+
+config DRV_INIT_DONT_BLOCK_INIT_ENTRY
+    bool "For ui app fastboot,drv init don't block nsh rcS"
+    select WAIT_TASK_EXIT_APP
+    default n
+
+config JTAG_ENABLE
+    bool "Enalbe JTAG/SWD debug, will disable WFI"
+    default y
+
+config TZ_ENABLE
+    bool "Enalbe Trust Zone"
+    default n
+
+config HIFI4_USE_AUDMA
+    bool "Only HIFI4 use audma"
+    default n
+
+config BES_NAND_FLASH
+    bool "Support nand Flash based bsp BES nandflash API"
+    default n
+if BES_NAND_FLASH
+choice
+    prompt "select nandflash mtd way"
+    default BES_NAND_MTD
+    help
+        Select nandflash mtd way
+    config BES_NAND_MTD
+        bool "nandflash mtd"
+    config BES_NAND_NXFFS
+        bool "Generate bootloader bin"
+
+    config BES_NAND_DHARA_MTDBLOCK
+        bool "nandflash dhara mtdblock"
+endchoice
+endif
+
+config BES_FLASH_SUSPEND
+    bool "Support Flash Suspend/Resume for flash opt"
+    select ARCH_HAVE_PROGMEM_READ
+    default n
+
+if BES_FLASH_SUSPEND
+config FLASHSUSPEND_HEAP_SIZE
+    hex "Set the cache size(n Byte) for flash suspend/resume"
+	default 0x100000
+endif
+
+config BES_RTC_CALIB
+	bool "RTC calibration"
+	depends on RTC
+	default n
+
+config RPMSG_GPIO_CLIENT
+	bool "RPMSG gpio client"
+	default n
+	select IOEXPANDER_INT_ENABLE
+
+config RPMSG_GPIO_SERVER
+	bool "RPMSG gpio server"
+	default n
+	select IOEXPANDER_INT_ENABLE
+
+config AUDIO_RPMSG_CLIENT
+	bool "Support audio rpmsg client"
+	default n
+	depends on AUDIO
+	---help---
+		This option mean than audio device is only a virtual interface,
+                real audio implement is in other chip
+
+config BES_CMUX
+	bool "BES CMUX Support"
+	default n
+	---help---
+		BES CMUX Support.
+
+config BES_INT_MODEM
+	bool "Support bes inter lte device"
+	default n
+	depends on BES_MODEM
+	---help---
+		Support bes inter lte device.
+
+config BES_MODEM
+	bool "Support bes modem net device"
+	default n
+	depends on NET
+	---help---
+		Support bes modem net device.
+
+config BES_IMS
+	bool "BES IMS Support"
+	default n
+	depends on NET
+	---help---
+		BES IMS Support
+
+config BES_IMS_LTE
+	bool "BES IMS LTE Support"
+	default n
+	depends on BES_IMS
+	---help---
+		BES IMS LTE Support
+
+config BES_IPSEC
+	bool "Support bes ipsec in ip6"
+	default n
+	depends on NET
+	---help---
+		Support bes ipsec in ip6.
+
+config AUDIO_RPMSG_SERVER
+	bool "Support audio rpmsg server"
+	default n
+	depends on AUDIO && RPTUN
+	---help---
+		Specifies audio device support audio rpmsg server.
+
+config RPMSG_COMMON_MSG_SERVER
+	bool "RPMSG common msg server support(misc msg)"
+	default n
+
+config RPMSG_COMMON_MSG_CLIENT
+	bool "RPMSG common msg client support(misc msg)"
+	default n
+
+config AUDIO_USE_AUDMA
+    bool "Setting audio dma"
+    default n
+    select HIFI4_USE_AUDMA
+
+config BES_OPEN_DMA
+    bool "Open DMA in current binary"
+    default n
+
+config PLAYBACK_USE_I2S
+    bool "SmartPa PLAYBACK_USE_I2S"
+    default n
+
+if PLAYBACK_USE_I2S
+	config PLAYBACK_I2S_DEVICE_ID
+		int "select i2s device id, default i2s1 device"
+		default 1
+endif
+
+config PLAYBACK_USE_I2S1
+    bool "config pcm2p device node"
+    default n
+
+if PLAYBACK_USE_I2S1
+	choice
+		prompt "i2s audio playback select master or slave mode"
+			default AUDIO_I2S_MASTER_PLAYBACK
+		help
+			Select i2s master or slave mode
+		config AUDIO_I2S_MASTER_PLAYBACK
+			bool "i2s playback use master mode"
+		config AUDIO_I2S_SLAVE_PLAYBACK
+			bool "i2s playback use slave mode"
+	endchoice
+	config PLAYBACK_I2S1_DEVICE_ID
+		int "select i2s device, default 0"
+		default 0
+endif
+
+config CAPTURE_USE_I2S1
+    bool "config pcm2c device node"
+    default n
+
+if CAPTURE_USE_I2S1
+	choice
+		prompt "i2s audio capture select master or slave mode"
+			default AUDIO_I2S_MASTER_CAPTURE
+		help
+			Select i2s master or slave mode
+		config AUDIO_I2S_MASTER_CAPTURE
+			bool "i2s capture use master mode"
+		config AUDIO_I2S_SLAVE_CAPTURE
+			bool "i2s capture use slave mode"
+	endchoice
+	config CAPTURE_I2S1_DEVICE_ID
+		int "select i2s device, default 0"
+		default 0
+endif
+
+config BES_AUDIO_API_V1
+	bool "Use audio api v1, standardized audioflinger interface"
+	default n
+
+config BES_AUDIO_LOCAL
+	bool "bes local audio"
+	select AUDIO
+	select AUDIO_COMP
+	select AUDIO_DRIVER_SPECIFIC_BUFFERS
+	select BES_AUDIO_API_V1
+	default n
+
+config BES_AUDIO_SERVER
+	bool "bes remote audio server"
+	select AUDIO
+	select AUDIO_COMP
+	select AUDIO_DRIVER_SPECIFIC_BUFFERS
+	select BES_AUDIO_API_V1
+	default n
+
+config BES_AUDIO_CLIENT
+	bool "bes remote audio client"
+	select AUDIO
+	select BES_AUDIO_API_V1
+	default n
+
+config SKIP_FRAME_COUNT
+    int "set capture skip frame count"
+    default 10
+
+config CONSOLE_USE_CHAR
+    bool "Use char driver on console serial"
+    default n
+
+config BES_BOOTMODE
+    bool "Enable BES Bootmode"
+    default n
+
+config BES_BACKTRACE
+    bool "Enable BES Backtrace"
+    default n
+
+config BES_CRASH_DUMP
+    bool "Enable BES Crash Dump"
+    default n
+
+config BES_HCI_DUMP
+    bool "Enable BES HCI dump"
+    default n
+
+config BES_AUDIO_DUMP
+    bool "Enable BES Audio dump"
+    default n
+
+config DUMP_A7_PLAYBACK
+    bool "Dump the A7 playback pcm"
+    default n
+    depends on BES_AUDIO_DUMP
+
+config DUMP_A7_CAPTURE
+    bool "Dump the A7 capture pcm"
+    default n
+    depends on BES_AUDIO_DUMP
+
+config AUDIO_BES_OUTPUT_CHANNELS
+	int "Number playback channel"
+	default 2
+	range 1 2
+		---help---
+		Set playback channle count
+
+config AUDIO_BES_INPUT_CHANNELS
+	int "Number capture channel"
+	default 3
+	range 1 4
+		---help---
+		Set capture channle count
+
+config AUDIO_BES_NUM_BUFFERS_PLAYBACK
+	int "Number playback buffer for cache"
+	default 2
+	range 2 128
+		---help---
+		Used when CONFIG_AUDIO_DRIVER_SPECIFIC_BUFFERS
+
+config AUDIO_BES_NUM_BUFFERS_CAPTURE
+	int "Number capture buffer for cache"
+	default 2
+	range 2 128
+		---help---
+		Used when CONFIG_AUDIO_DRIVER_SPECIFIC_BUFFERS
+
+config USB_SWITCH
+    bool "enable usb switch"
+    default n
+
+config USB_SYNC_CACHE
+    bool "enable cache sync in usb transfer"
+	default n
+
+config VCHGR_ENABLE
+    bool "enable vchgr plugin/out check"
+	default n
+
+config CHARGER_IRQ_GPIO
+    int "charger irq gpio num"
+    default 89
+
+config RECOVERY_SUPPORT
+    bool "Recovery system support"
+    default n
+
+config PMU_CAPBIT
+    hex "set pmu capbit value"
+    default 0
+
+config FLASH_DUAL_CHIP
+    bool "support dual chip flash"
+    default n
+    depends on RECOVERY_SUPPORT
+
+if RECOVERY_SUPPORT
+config RECOVERY_BIN_SIZE
+    hex "RECOVERY BIN SIZE"
+    default 0x180000
+    default 0x170000 if FLASH_DUAL_CHIP
+
+choice
+    prompt "bootloader or recovery"
+    default GEN_NONE
+    help
+        Select Generate bin
+
+    config GEN_NONE
+        bool "None"
+
+    config GEN_RECOVERY_BIN
+        bool "Generate recovery bin"
+
+    config GEN_BOOTLOADER_BIN
+        bool "Generate bootloader bin"
+endchoice
+endif
+
+config BES_COMMON_RPTUN_FILE
+    bool "default use chips/up_rptun_xxx.c,otherwise use boards/xxx/up_rptun_xxx.c"
+    default y
+
+config BES_RPTUN_DELAY_BOOT
+    bool "boot/stop remote core use rptun cmd"
+    default y
+
+config BES_DUALCORE_AMP
+    bool "Cortex M dual core used as AMP"
+    default n
+
+config BES_RPTUN_NS2SE
+    bool "BES RPTUN AP NS <-> SE support"
+    default n
+
+config BES_RPTUN_NS2SE_MASTER
+    bool "BES RPTUN AP NS <-> SE master"
+    default n
+
+config BES_RPTUN_AP2SENS
+    bool "BES RPTUN AP <-> Sens support"
+    default n
+
+config BES_RPTUN_AP2SENS_MASTER
+    bool "BES RPTUN AP <-> Sens master"
+    default n
+
+config BES_RPTUN_CP2SENS
+    bool "BES RPTUN CP <-> Sens support"
+    default n
+
+config BES_RPTUN_CP2SENS_MASTER
+    bool "BES RPTUN CP <-> Sens master"
+    default n
+
+config BES_RPTUN_AP2CP
+    bool "BES RPTUN AP <-> CP support"
+    default n
+
+config BES_RPTUN_AP2CP_MASTER
+    bool "BES RPTUN AP <-> CP master"
+    default n
+
+config BES_RPTUN_AP2DSP
+    bool "BES RPTUN AP <-> DSP support"
+    default n
+
+config BES_RPTUN_AP2DSP_MASTER
+    bool "BES RPTUN AP <-> DSP master"
+    default n
+
+config BES_RPTUN_DSP2CP
+    bool "BES RPTUN DSP <-> CP support"
+    default n
+
+config BES_RPTUN_AP2BTH
+    bool "BES RPTUN AP <-> BTH support"
+    default n
+
+config BES_RPTUN_AP2BTH_MASTER
+    bool "BES RPTUN AP <-> BTH master"
+    default n
+
+config BES_RPTUN_CP2BTH
+    bool "BES RPTUN CP <-> BTH support"
+    default n
+
+config BES_RPTUN_CP2BTH_MASTER
+    bool "BES RPTUN CP <-> BTH master"
+    default n
+
+if BES_RPTUN_AP2CP
+config CP_SUBSYS_BIN_SIZE
+	hex "CP SUBSYS BIN SIZE"
+	default 0x100000
+
+config CP_SUBSYS_BIN_ADDRESS
+	hex "CP SUBSYS BIN ADDRESS"
+	default 0
+	depends on BES_RPTUN_AP2CP_MASTER
+endif
+
+if BES_RPTUN_AP2DSP
+config DSP_BIN_SIZE
+	hex "DSP BIN SIZE"
+	default 0x200000
+
+config DSP_BIN_ADDRESS
+	hex "DSP BIN ADDRESS"
+	default 0
+	depends on BES_RPTUN_AP2DSP_MASTER
+
+config GEN_DSP_BIN
+    bool "Generate Cortex M DSP bin"
+    default y
+    depends on !BES_RPTUN_AP2DSP_MASTER
+endif
+
+if BES_DUALCORE_AMP
+config CMCP_BIN_SIZE
+	hex "CMCP BIN SIZE"
+	default 0x200000
+
+config CMCP_BIN_OFFSET
+	hex "CMCP BIN OFFSET"
+	default 0
+
+config GEN_CMCP_BIN
+    bool "Generate Cortex M CP bin"
+    default n
+endif
+
+if BES_RPTUN_AP2SENS
+config BES_SENS_RAM_SIZE
+	hex "BES SENS RAM SIZE"
+	default 0x80000
+
+config SENS_BIN_ADDRESS
+	hex "SENS BIN ADDRESS"
+	default 0
+	depends on BES_RPTUN_AP2SENS_MASTER
+
+config BES_SENS_BIN_FLASH_BOOT
+	bool "boot sensor with XIP"
+	default n
+	depends on BES_RPTUN_AP2SENS_MASTER
+
+if !BES_SENS_BIN_FLASH_BOOT
+config SENS_BIN_SIZE
+	hex "SENS BIN SIZE"
+	default 0x80000
+endif
+
+config BES_GEN_SENS_BIN
+    bool "BES Generate SENS bin"
+    default n
+    depends on !BES_RPTUN_AP2SENS_MASTER
+endif
+
+config BES_GEN_BTH_CP_BIN
+    bool "BES Generate cp(1600 bth) bin"
+    default n
+
+config BES_GEN_HIFI_BIN
+    bool "BES Generate hifi(1600 dsp) bin"
+    default n
+
+config ALGO_NEED_FIX_BUFF
+    bool "enable fix buffer in sens"
+    default n
+
+if ALGO_NEED_FIX_BUFF
+config ALGO_FIX_BUFF_SIZE
+    hex "fix buffer size in sens"
+    default 0x100
+endif
+
+config A7_DSP_ENABLE
+	bool "A7 DSP Enable"
+	default n
+	depends on !GEN_RECOVERY_BIN
+
+if A7_DSP_ENABLE
+config A7_FLASH_XIP
+	bool "Enable A7 flash xip"
+	default n
+	depends on A7_DSP_ENABLE
+endif
+
+config BES_RPTUN_MASTER
+    bool "Remote Processor Tunneling Role"
+    depends on RPTUN
+
+config CHIP_FLASH_SIZE
+	hex "CHIP FLASH SIZE"
+	default 0x1000000
+
+config BIN_FLASH_SIZE
+	hex "BIN FLASH SIZE"
+	default 0x6B0000
+
+config ALT_BOOT_FLASH
+	bool "Boot from alt FLASH interface"
+	default n
+
+config PSRAM_ENABLE
+	bool "PSRAM support"
+	default n
+
+config PSRAMUHS_ENABLE
+	bool "PSRAMUHS support"
+	default n
+
+if PSRAM_ENABLE
+choice
+    prompt "PSRAM mode"
+    default PSRAM_DEFAULT
+    help
+        Select PSRAM mode
+    config PSRAM_DEFAULT
+        bool "psram default mode"
+    config PSRAM_XCCELA
+        bool "psram xccela mode"
+    config PSRAM_APS3208K
+        bool "psram APS3208K"
+    config PSRAM_HYPERBUS
+        bool "psram hyperbus mode"
+endchoice
+
+config PSRAM_CONFIG_ENABLE
+	bool "USE PSRAM CONFIG"
+	default n
+endif
+
+if PSRAM_CONFIG_ENABLE
+config PSRAM_SIZE
+      hex "PSRAM SIZE"
+      default 0x800000
+
+config PSRAM_OFFSET
+      hex "PSRAM OFFSET"
+      default 0x0
+
+config PSRAM_RESERVED_SIZE
+      hex "PSRAM reserved space"
+      default 0x4000
+
+config PSRAM_BUILD
+      bool "Binary run on PSRAM"
+      default n
+endif
+
+if PSRAM_BUILD
+config PSRAM_BUILD_BASE
+	hex "Binary run on PSRAM base"
+	default 0x3DC00000
+config PSRAM_BUILD_SIZE
+	hex "Binary run on PSRAM size"
+	default 0x400000
+endif
+
+if PSRAMUHS_ENABLE
+choice
+	prompt "PSRAMUHS mode"
+	default PSRAMUHS_DEFAULT
+	help
+		Select PSRAMUHS mode
+	config PSRAMUHS_AP325608A
+		bool "psramuhs AP325608A"
+	config PSRAMUHS_ULSMODE
+		bool "psramuhs ULSMODE"
+	config PSRAMUHS_DEFAULT
+		bool "psramuhs default"
+endchoice
+endif
+
+config BES_AUDIO_PROCESS
+	bool "audio process for eq drc iir etc."
+	default n
+
+config BES130X_HAVE_ENET
+	bool
+	default n
+	select ARCH_HAVE_PHY
+	select ARCH_PHY_INTERRUPT
+	select ARCH_HAVE_NETDEV_STATISTICS
+
+config BES130X_HAVE_EWM
+	bool
+	default n
+
+config BUTTON_USE_GPIO
+	bool "USE Alt adapter of gpio key(not use hal_key.c adp)"
+	default n
+	default y if USE_SLOW_TIMER
+
+config BES130X_HAVE_FIRC_CMU
+	bool
+	default n
+
+config BES130X_HAVE_HSRUN
+	bool
+	default n
+
+config BES130X_HAVE_LMEM
+	bool
+	default n
+
+config BES130X_HAVE_LPSPI1
+	bool
+	default n
+
+config BES130X_HAVE_LPSPI2
+	bool
+	default n
+
+config BES130X_HAVE_QSPI
+	bool
+	default n
+
+config BES130X_HAVE_SAI
+	bool
+	default n
+
+config BES130X_HAVE_SPLL
+	bool
+	default n
+
+config BES_HAVE_I2C
+	bool
+	default y
+
+config BES_HAVE_SPI
+	bool "BES_HAVE_SPI"
+	default y
+
+config BES_OTGHS
+	bool "BES OTG High Speed"
+	default n
+	depends on USBHOST
+	select USBHOST_CDCACM
+	select SERIAL_REMOVABLE
+	select USBHOST_HAVE_ASYNCH
+
+
+config BES_HAVE_USB
+	bool "BES_HAVE_USB"
+	default n
+	select USBDEV
+
+config BES_SECURE_BOOT
+    bool "bes secure boot support"
+    default n if ARCH_BOARD_CUSTOM_BES1600_EVB
+    default y if !ARCH_BOARD_CUSTOM_BES1600_EVB
+
+config FIX_PIXCLK_DIV
+    bool "use fix pixclk divider or use bbpll and dsipll calculate"
+    default n if ARCH_BOARD_CUSTOM_BES1600_EVB
+    default y if !ARCH_BOARD_CUSTOM_BES1600_EVB
+
+config DSI_PLL_480M
+        bool "dsi pll use 480Mhz freq"
+	default n
+
+config BES_BBPLL_FREQ_393M
+	bool "config bbpll value(393.216M)"
+	default n
+
+config BES_MTDSDMMC
+	bool "BES_MTDSDMMC"
+	select BES_IOEXPANDER if MMCSD_HAVE_CARDDETECT
+	select BES_GPIOIRQ if MMCSD_HAVE_CARDDETECT
+	default n
+
+if BES_MTDSDMMC
+config BES_SDMMC_SPEED
+	int "SDMMC Speed"
+	default 48000000
+endif
+
+config BES_MTDSDMMC_EMMC
+	bool "BES_MTDSDMMC_EMMC"
+	default n
+
+if BES_MTDSDMMC_EMMC
+choice
+	prompt "MTDSDMMC emmc bit width"
+	default BES_MTDSDMMC_EMMC_8BIT
+
+	config BES_MTDSDMMC_EMMC_1BIT
+		bool "1bit width"
+
+	config BES_MTDSDMMC_EMMC_4BIT
+		bool "4bit width"
+
+	config BES_MTDSDMMC_EMMC_8BIT
+		bool "8bit width"
+
+endchoice
+endif
+
+config BES_MMCSD_SPI
+	bool "BES_MMCSD_SPI"
+	select BES_HAVE_SPI
+	default n
+
+config BES_HAVE_IRC
+	bool "BES_HAVE_IRC"
+	default n
+
+config BES_HAVE_DVFS
+	bool "BES_HAVE_DVFS"
+	default n
+
+# Peripheral Group Selections
+
+config BES_HEADSET
+	bool "BES_HEADSET"
+	default n
+
+config BES_EMMC
+	bool "BEST SoC EMMC IP"
+	select MMCSD
+	select MMCSD_SDIO
+	select SDIO_BLOCKSETUP
+	select SDIO_DMA
+	default n
+if BES_EMMC
+choice
+	prompt "BES EMMC SELECT SPEED"
+	default BES_EMMC_DS
+
+	config BES_EMMC_HS200
+		bool "HS200 speed mode"
+
+	config BES_EMMC_SDR52
+		bool "SDR52 speed mode"
+
+	config BES_EMMC_DS
+		bool "DS speed mode"
+
+endchoice
+endif
+config BES_BEST_SDIO
+	bool "BEST SoC SDIO"
+
+	select ARCH_HAVE_SDIO
+	select SDIO
+	select SDIO_BLOCKSETUP
+	select SDIO_DMA
+	default n
+
+config BES_HAVE_TRNG
+	bool
+
+config BES_TRNG
+	bool "BES True Random Number Generator (TRNG)"
+	default y
+	select ARCH_HAVE_RNG
+
+config BES_LPUART
+	bool
+	default n
+	select SERIAL_RXDMA
+	select SERIAL_TXDMA
+
+config BES130X_LPSPI
+	bool
+	default n
+
+# Peripheral Selection
+
+menu "BES130X Peripheral Selection"
+config MBOX
+	bool "MBOX"
+	default y
+
+config BES130X_EDMA
+	bool "eDMA"
+	default n
+
+config BES130X_ENET
+	bool "Ethernet"
+	default n
+	depends on BES130X_HAVE_ENET
+
+config BES130X_LPSPI0
+	bool "LPSPI0"
+	default n
+	select BES130X_LPSPI
+	select SPI
+
+config BES130X_LPSPI1
+	bool "LPSPI1"
+	default n
+	select BES130X_LPSPI
+	select SPI
+	depends on BES130X_HAVE_LPSPI1
+
+config BES130X_LPSPI2
+	bool "LPSPI2"
+	default n
+	select BES130X_LPSPI
+	select SPI
+	depends on BES130X_HAVE_LPSPI2
+
+config BES_LPUART0
+	bool "LPUART0"
+	default n
+	select BES_LPUART
+	select LPUART0_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+config BES_LPUART0_USE_CHAR
+	bool "LPUART0 use char"
+	default n
+	depends on BES_LPUART0
+
+config BES_LPUART1
+	bool "LPUART1"
+	default n
+	select BES_LPUART
+	select LPUART1_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+config BES_LPUART1_USE_CHAR
+	bool "LPUART1 use char"
+	default n
+	depends on BES_LPUART1
+
+config BES_LPUART2
+	bool "LPUART2"
+	default n
+	select BES_LPUART
+	select LPUART2_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+config BES_LPUART2_USE_CHAR
+	bool "LPUART2 use char"
+	default n
+	depends on BES_LPUART2
+
+config BES_LPUART3
+	bool "LPUART3"
+	default n
+	select BES_LPUART
+	select LPUART3_SERIALDRIVER
+	select ARCH_HAVE_SERIAL_TERMIOS
+
+config BES_LPUART3_USE_CHAR
+	bool "LPUART3 use char"
+	default n
+	depends on BES_LPUART3
+
+config BES130X_RTC
+	bool "RTC"
+	default n
+
+
+endmenu # BES130X Peripheral Selection
+
+config WDT_IRQ_TO_MAINCPU
+	bool "forward subsys wdt irq to main cpu"
+	default n
+
+menu "BES GPIO Interrupt Configuration"
+
+config BES_GPIOIRQ
+	bool "GPIO pin interrupts"
+	default n
+	select DEV_GPIO
+	---help---
+		Enable support for interrupting GPIO pins
+
+if BES_GPIOIRQ
+config BES_IOEXPANDER
+	bool "Bes I/O Expander"
+	default n
+	select IOEXPANDER
+	select IOEXPANDER_INT_ENABLE
+	---help---
+		Build a simple I/O Expander.
+
+config BES_PORT0INTS
+	bool "GPIO0 interrupts"
+	---help---
+		Enable support for 32 interrupts from GPIO port 0 pins
+
+config BES_PORT1INTS
+	bool "GPIO1 interrupts"
+	---help---
+		Enable support for 8 interrupts from GPIO port 1 pins
+
+endif
+endmenu # BES GPIO Interrupt Configuration
+
+menu "BES130X FLASH Configuration"
+comment "CAREFUL: Bad selections may lock up your board"
+
+config BES130X_FLASHCFG_BACKDOOR1
+	hex "Backdoor comparison key 1"
+	default 0xffffffff
+	---help---
+		Refer to the BES130X reference manual for a description of the
+		backdoor key.  This option selects the first 32-bit word in
+		memory.
+
+config BES130X_FLASHCFG_BACKDOOR2
+	hex "Backdoor comparison key 2"
+	default 0xffffffff
+	---help---
+		Refer to the BES130X reference manual for a description of the
+		backdoor key.  This option selects the second 32-bit word in
+		memory
+
+config BES130X_FLASHCFG_FPROT
+	hex "Program flash protection bytes"
+	default 0xffffffff
+	---help---
+		Refer to the BES130X reference manual or to hardware/s32k1xx_flashcfg.h
+		for a description of the FPROT bitfields.
+
+config BES130X_FLASHCFG_FSEC
+	hex "Flash security byte"
+	default 0xfe
+	---help---
+		Refer to the BES130X reference manual or to hardware/s32k1xx_flashcfg.h
+		for a description of the FSEC bitfields.
+
+config BES130X_FLASHCFG_FOPT
+	hex "Flash nonvolatile option byte"
+	default 0x7f
+	---help---
+		Refer to the BES130X reference manual or to hardware/s32k1xx_flashcfg.h
+		for a description of the FOPT bitfields.
+
+config BES130X_FLASHCFG_FEPROT
+	hex "EEPROM protection byte"
+	default 0xff
+	---help---
+		Refer to the BES130X reference manual or to hardware/s32k1xx_flashcfg.h
+		for a description of the FEPROT bitfields.
+
+config BES130X_FLASHCFG_FDPROT
+	hex "Data flash protection byte"
+	default 0xff
+	---help---
+		Refer to the BES130X reference manual or to hardware/s32k1xx_flashcfg.h
+		for a description of the FDPROT bitfields.
+
+endmenu # BES130X FLASH Configuration
+
+menu "eDMA Configuration"
+	depends on BES130X_EDMA
+
+config BES130X_EDMA_NTCD
+	int "Number of transfer descriptors"
+	default 0
+	---help---
+		Number of pre-allocated transfer descriptors.  Needed for scatter-
+		gather DMA.  Make to be set to zero to disable in-memory TCDs in
+		which case only the TCD channel registers will be used and scatter-
+		will not be supported.
+
+config BES130X_EDMA_ELINK
+	bool "Channeling Linking"
+	default n
+	---help---
+		This option enables optional minor or major loop channel linking:
+
+		Minor loop channel linking:  As the channel completes the minor
+		loop, this flag enables linking to another channel. The link target
+		channel initiates a channel service request via an internal
+		mechanism that sets the TCDn_CSR[START] bit of the specified
+		channel.
+
+		If minor loop channel linking is disabled, this link mechanism is
+		suppressed in favor of the major loop channel linking.
+
+		Major loop channel linking:  As the channel completes the minor
+		loop, this option enables the linking to another channel. The link
+		target channel initiates a channel service request via an internal
+		mechanism that sets the TCDn_CSR[START] bit of the linked channel.
+
+config BES130X_EDMA_ERCA
+	bool "Round Robin Channel Arbitration"
+	default n
+	---help---
+		Normally, a fixed priority arbitration is used for channel
+		selection.  If this option is selected, round robin arbitration is
+		used for channel selection.
+
+config BES130X_EDMA_HOE
+	bool "Halt On Error"
+	default y
+	---help---
+		Any error causes the HALT bit to set. Subsequently, all service
+		requests are ignored until the HALT bit is cleared.
+
+config BES130X_EDMA_CLM
+	bool "Continuous Link Mode"
+	default n
+	---help---
+		By default, A minor loop channel link made to itself goes through
+		channel arbitration before being activated again.  If this option is
+		selected, a minor loop channel link made to itself does not go
+		through channel arbitration before being activated again. Upon minor
+		loop completion, the channel activates again if that channel has a
+		minor loop channel link enabled and the link channel is itself. This
+		effectively applies the minor loop offsets and restarts the next
+		minor loop.
+
+config BES130X_EDMA_EMLIM
+	bool "Minor Loop Mapping"
+	default n
+	---help---
+		Normally TCD word 2 is a 32-bit NBYTES field.  When this option is
+		enabled, TCD word 2 is redefined to include individual enable fields,
+		an offset field, and the NBYTES field.  The individual enable fields
+		allow the minor loop offset to be applied to the source address, the
+		destination address, or both. The NBYTES field is reduced when either
+		offset is enabled.
+
+config BES130X_EDMA_EDBG
+	bool "Enable Debug"
+	default n
+	---help---
+		When in debug mode, the DMA stalls the start of a new channel. Executing
+		channels are allowed to complete. Channel execution resumes when the
+		system exits debug mode or the EDBG bit is cleared
+
+endmenu # eDMA Global Configuration
+if  BES_HAVE_IRC
+
+menu "IRC Configuration"
+comment "bes IRC is a gpio based ir controller"
+
+config IR_RX_PIN
+	int "IRC RX pin"
+	default 29
+	---help---
+		Select  IRC RX pin.
+
+config BES_TX_PWM_ID
+	int "IRC TX PWM ID"
+	default 2
+	---help---
+		Select  IRC TX PWM ID.
+
+endmenu # IRC Configuration
+endif #BES_HAVE_IRC
+
+if  BES_HAVE_I2C
+
+menu "I2C Port Configuration"
+comment "I2c ports share some pins with uart1 and spilcd, make sure these pins not used"
+
+config SCL_SDA_DEFINED_AT_DDK
+    bool "I2C SCL&SDA PIN defined at DDK"
+    default y
+
+config BES_I2C_DISABLE_YIELD
+       bool "Donot yield i2c transfer."
+       default n
+
+config BES_I2C_LOCK
+	bool "Enable i2c transfer lock on bes chips."
+	default n
+	---help---
+		Enable i2c transfer lock on bes chips.
+
+config BES_I2C0_DMA_ENABLE
+	bool "i2c0 use dma transfer."
+	default n
+	---help---
+		i2c0 use dma transfer.
+
+config BES_I2C1_DMA_ENABLE
+	bool "i2c1 use dma transfer."
+	default n
+	---help---
+		i2c1 use dma transfer.
+
+config BES_I2C2_DMA_ENABLE
+	bool "i2c2 use dma transfer."
+	default n
+	---help---
+		i2c2 use dma transfer.
+
+config BES_I2C3_DMA_ENABLE
+	bool "i2c3 use dma transfer."
+	default n
+	---help---
+		i2c3 use dma transfer.
+
+config BES_I2C4_DMA_ENABLE
+	bool "i2c4 use dma transfer."
+	default n
+	---help---
+		i2c4 use dma transfer.
+
+config BES_I2C0
+	bool "use i2c port0"
+	default n
+	---help---
+		Enable i2c port0.
+
+config BES_I2C1
+	bool "use i2c port1"
+	default n
+	---help---
+		Enable i2c port1.
+
+config BES_I2C2
+	bool "use i2c port2"
+	default n
+	---help---
+		Enable i2c port2.
+
+config BES_I2C3
+	bool "use i2c port3"
+	default n
+	---help---
+		Enable i2c port3.
+
+config BES_I2C4
+	bool "use i2c port4"
+	default n
+	---help---
+		Enable i2c port4.
+
+config BES_GPIOI2C
+	bool "use gpio i2c port 0xff"
+	default n
+	---help---
+		Enable gpio i2c port 0xff.
+
+config BES_I2C_TUNE_FREQ_ON_TRANSFER
+	bool "tune frequency on every transfer"
+	default n
+	---help---
+		tune frequency on every transfer.
+
+endmenu # I2C Port Configuration
+endif #BES_HAVE_I2C
+
+
+menu "LPI2C0 Configuration"
+	depends on BES_I2C0
+
+config LPI2C0_BUSYIDLE
+	int "Bus idle timeout period in clock cycles"
+	default 0
+
+config LPI2C0_FILTSCL
+	int "I2C master digital glitch filters for SCL input in clock cycles"
+	default 0
+
+config LPI2C0_FILTSDA
+	int "I2C master digital glitch filters for SDA input in clock cycles"
+	default 0
+
+endmenu # LPI2C0 Configuration
+
+menu "LPI2C1 Configuration"
+	depends on BES_I2C1
+
+config LPI2C1_BUSYIDLE
+	int "Bus idle timeout period in clock cycles"
+	default 0
+
+config LPI2C1_FILTSCL
+	int "I2C master digital glitch filters for SCL input in clock cycles"
+	default 0
+
+config LPI2C1_FILTSDA
+	int "I2C master digital glitch filters for SDA input in clock cycles"
+	default 0
+
+endmenu # LPI2C1 Configuration
+
+if BES_HAVE_SPI
+menu "SPI0/SPILCD Configuration"
+
+config BES_SPI
+	bool "SPI Support"
+	default y
+
+config BES_SPI_HAVE_SPI0
+	bool "SPI0 Support"
+	default y
+
+config BES_SPI_HAVE_SPILCD
+	bool "SPILCD Support"
+	default n
+
+config BES_SPI_DMA
+	bool "Default enable spi dma transfer"
+	default y
+
+config BES_SPI_USE_DMA_LINK
+    bool "use dma link for large dma trans"
+    default n
+    depends on  BES_SPI_DMA
+
+if BES_SPI_HAVE_SPI0
+menu "SPI0 Configuration"
+
+config BES_SPI0
+	bool "Use port SPI0"
+	default n
+
+config BES_SPI0SLAVE
+	bool "use SPI0 as Slave function"
+	default n
+
+config BES_SPI0_CS1
+    bool "port SPI0 have CS1"
+	default n
+
+config BES_SPI0_4WIRE
+    bool "port SPI0 is 4WIRE Mode"
+	default n
+
+config BES_SPI0_4WIRE_DI1
+    bool "port SPI0 HAVE DI1 PIN"
+	default n
+	depends on  BES_SPI0_4WIRE
+
+endmenu # SPI0 Configuration
+endif # BES_SPI_HAVE_SPI0
+
+if BES_SPI_HAVE_SPILCD
+menu "SPILCD Configuration"
+
+config BES_SPILCD
+	bool "Use port SPILCD"
+	default n
+
+config BES_SPILCDSLAVE
+	bool "use SPILCD as Slave function"
+	default n
+
+ choice
+    prompt "SPILCD Port PINS selection"
+    default SPILCD_IOMUX_INDEX_10
+
+config SPILCD_IOMUX_INDEX_10
+	bool "GPIO_PIN8(p10) Used by SPILCD Port"
+    ---help---
+		Select GPIO_PIN8(p10) Used by SPILCD Port
+
+config SPILCD_IOMUX_INDEX_35
+	bool "GPIO_PIN29(p35) Used by SPILCD Port"
+     ---help---
+		Select GPIO_PIN8(p35) Used by SPILCD Port
+
+config SPILCD_IOMUX_INDEX_14
+	bool "GPIO_PIN12(p14) Used by SPILCD Port"
+    ---help---
+		Select GPIO_PIN8(p14) Used by SPILCD Port
+
+config SPILCD_IOMUX_INDEX_34
+	bool "GPIO_PIN28(p34) Used by SPILCD Port"
+    ---help---
+		Select GPIO_PIN8(p34) Used by SPILCD Port
+endchoice
+
+config SPILCD_IOMUX_CS1_INDEX_27
+	bool "GPIO_PIN23(p27) as GPIO_SPILCD_CS1"
+	default n
+    depends on BES_SPI_HAVE_CS1
+
+config BES_SPILCD_CS1
+    bool "port SPILCD have CS1"
+	default n
+
+config BES_SPILCD_4WIRE
+    bool "port SPI0 is 4WIRE Mode"
+	default n
+
+config BES_SPILCD_4WIRE_DI1
+    bool "port SPI0 HAVE DI1 PIN"
+	default n
+	depends on  BES_SPILCD_4WIRE
+
+config BES_SPILCD_IOMUX_CLK_INDEX
+    int "port SPILCD CLK IOMUX INDEX"
+	default 90
+
+config BES_SPILCD_IOMUX_DI0_INDEX
+    int "port SPILCD DI0 IOMUX INDEX"
+	default 92
+
+endmenu # SPILCD Configuration
+endif # BES_SPI_HAVE_SPILCD
+endmenu # SPI Configuration
+endif # BES_HAVE_SPI
+
+config BES_SPIDBGSLAVE
+	bool "Use debug slave spi"
+	default n
+
+menu "DSI PHY Configuration"
+
+config DSI_2LANE_MODE
+	bool "enable 2 lanes for dsi phy"
+	default n
+
+config SWAP_DSI_CLK_PN
+	bool "swap dsi clk pn pin"
+	default n
+
+config SWAP_DSI_LANE0_PN
+	bool "swap dsi lane0 pn pin"
+	default n
+
+if DSI_2LANE_MODE
+config SWAP_DSI_LANE1_PN
+	bool "swap dsi lane1 pn pin"
+	default n
+endif
+
+config DSI_VIDEO_MODE
+	bool "dsi use vido mode, defualt is cmd mode"
+	default n
+
+config EXIT_ULPS_ASYNC
+	bool "exit ulps asynchronously"
+	default n
+
+choice
+	prompt "select dsi output color format"
+	default DSIPHY_OUTFMT_RGB888
+	help
+		select dsi phy output colot format
+
+	config DSIPHY_OUTFMT_RGB888
+		bool "RGB888"
+
+	config DSIPHY_OUTFMT_RGB565
+		bool "RGB565"
+
+	config DSIPHY_OUTFMT_RGB666
+		bool "RGB666"
+
+	config DSIPHY_OUTFMT_LOOSELYRGB666
+		bool "LOOSELYRGB666"
+
+	config DSIPHY_OUTFMT_RGB101010
+		bool "RGB101010"
+
+	config DSIPHY_OUTFMT_YCbCr24
+		bool "YCbCr24"
+
+	config DSIPHY_OUTFMT_YCbCr20
+		bool "YCbCr20"
+
+	config DSIPHY_OUTFMT_YCbCr16
+		bool "YCbCr16"
+
+	config DSIPHY_OUTFMT_YCbCr12
+		bool "YCbCr12"
+endchoice
+
+endmenu
+
+menu "BES LCDC Configuration"
+
+config ULPS_MODE_SUPPORT
+	bool "ulps mode support"
+	default y
+
+config ENTER_SLEEP_NO_FRAMES
+	bool "lcdc and dsi enter sleep when no frames to send"
+	default n
+
+config DSI_SLEEP
+	bool "dsi phy sleep support"
+	default y
+
+config LCDC_SLEEP
+	bool "lcdc sleep support"
+	default y
+
+config LCDC_TE_IRQ_ENABLE
+	bool "enable TE irq"
+	default y if ULPS_MODE_SUPPORT && LCDC_AUTOREFRESH_MODE
+	default n
+
+config LCDC_PIXEL_MARGIN
+	int "lcdc pitch margin, unit: pixel"
+	default 0
+	---help---
+		The lcdc pitch margin pixels
+
+config LCDC_USE_QSPI
+	bool "lcdc use qspi"
+	default n
+
+config LCDC_DUAL_DSI
+    bool "lcdc dual-dsi support"
+    default n
+
+config FB_DOUBLE_BUFFER
+	bool "double buffer support"
+	default y
+
+config FB_PANDISPLAY
+	bool "pandisplay support"
+	default y
+
+config FB_DRV_ROTATE
+	bool "rotate fb"
+	default n
+
+if FB_DRV_ROTATE
+choice
+    prompt "chose rotate method"
+    default ROTATE_DMA
+    help
+        chose rotate method
+
+    config ROTATE_DMA
+        bool "rotate use DMA"
+
+    config ROTATE_CPU
+        bool "rotate use CPU"
+endchoice
+choice
+    prompt "rotate 90 or 270"
+    default FB_ROTATE_270
+    help
+        chose rotate method
+
+    config FB_ROTATE_90
+        bool "rotate 90"
+
+    config FB_ROTATE_270
+        bool "rotate 270"
+endchoice
+if ROTATE_DMA
+choice
+    prompt "chose dma rotate method"
+    default ROTATE_SRC2D if FB_STATIC_BUFFER
+    help
+        chose dma rotate method
+
+    config ROTATE_SRC2D
+        bool "DMA rotate use source 2d, dist address is continuous"
+
+    config ROTATE_DST2D
+        bool "DMA rotate use dist 2d, source address is continuous"
+endchoice
+endif
+
+config FBDST_BUFFER_SECTION
+	string "The section where rotate dst framebuffer buffer is located"
+	default ".psramuhs_bss"
+	depends on PSRAMUHS_ENABLE
+	---help---
+		The section where rotate dst framebuffer buffer is located.
+endif
+
+config FBMEM_CACHED
+	bool "fbmem is cached ?"
+	default n
+	help
+		If fbmem is cached, need enable this config.
+
+config LCDC_AUTOREFRESH_MODE
+	bool "Lcdc refresh lcd automatic"
+	default n
+
+config FB_STATIC_BUFFER
+	bool "framebuffer use static buffer(default on SRAM)"
+	default y
+
+config DISCONTNUOUS_FB_DOUBLE_BUFFER
+       bool "fb double buffer usage(mem2 = mem + yoffset)"
+       default n
+
+if FB_STATIC_BUFFER
+config FB_BUFFER_FIXED_ADDR
+	hex "framebuffer buffer is located at fix address"
+	default 0
+	depends on FB_STATIC_BUFFER
+	---help---
+		The address where framebuffer buffer is located.
+
+config FB_BUFFER_SECTION
+	string "The section where framebuffer buffer is located"
+	default ".framebuffer"
+	depends on FB_STATIC_BUFFER
+	---help---
+		The section where framebuffer buffer is located.
+endif
+menu "Layer Configuration"
+
+config LCDC_L1
+	bool "lcdc layer1"
+	default n if !VIDEO_FB
+	default y if VIDEO_FB
+
+if LCDC_L1
+choice
+	prompt "select layer1 color fmt"
+	default LCDC_L1_ARGB8888
+	help
+		Select lcdc layer1 color formate.
+
+	config LCDC_L1_ARGB8888
+		bool "ARGB8888"
+
+	config LCDC_L1_RGB888
+		bool "RGB888"
+
+	config LCDC_L1_RGB565
+		bool "RGB565"
+
+	config LCDC_L1_YUV422
+		bool "YUV422_UYVY"
+endchoice
+endif
+
+config LCDC_L2
+	bool "lcdc layer2"
+	default n
+
+if LCDC_L2
+choice
+	prompt "select layer2 color fmt"
+	default LCDC_L2_ARGB8888
+	help
+		Select lcdc layer2 color formate.
+
+	config LCDC_L2_ARGB8888
+		bool "ARGB8888"
+
+	config LCDC_L2_RGB888
+		bool "RGB888"
+
+	config LCDC_L2_RGB565
+		bool "RGB565"
+endchoice
+endif
+endmenu
+
+config LCDC_WB_TEST
+	bool "lcdc write back test"
+	default n
+
+if LCDC_WB_TEST
+config LCDC_LWB
+	bool "lcdc write back layer"
+	default n
+
+if LCDC_LWB
+choice
+	prompt "select write back layer color fmt"
+	default LCDC_L0_RGB888
+	help
+		Select lcdc write back layer color formate.
+
+	config LCDC_L0_ARGB8888
+		bool "ARGB8888"
+
+	config LCDC_L0_RGB888
+		bool "RGB888"
+
+	config LCDC_L0_RGB565
+		bool "RGB565"
+endchoice
+endif
+endif
+endmenu
+
+menu "BES VGLite For LVGL Port"
+config LV_USE_DRAW_BES_VGLITE
+	bool "Use BES's VG-Lite GPU on BES platforms"
+	default n
+
+config LV_USE_BES_VGLITE_DRAW_THREAD
+	bool "Enable BES VGLite draw async"
+	depends on LV_USE_DRAW_BES_VGLITE && LV_USE_OS > 0
+	default n
+
+config LV_USE_BES_VGLITE_DRAW_ASYNC
+    bool "Enable BES VGLite draw async"
+    depends on LV_USE_DRAW_BES_VGLITE && LV_USE_OS > 0
+    default n
+    help
+        Queue multiple tasks and flash them once to the GPU.
+
+config LV_USE_BES_VGLITE_ASSERT
+    bool "Enable BES VGLite asserts"
+    default n
+    depends on LV_USE_DRAW_BES_VGLITE
+
+config LV_USE_BES_VGLITE_COMPRESS
+    bool "Enable BES VGLite target buffer compress"
+    default n
+    depends on LV_USE_DRAW_BES_VGLITE
+
+config LV_BES_VGLITE_COMPRESS_MODE
+    int "BES VGLite target buffer compress mode, 1:NON_SAMPLE, 2:H_SAMPLE"
+    default 1
+    depends on LV_USE_DRAW_BES_VGLITE && LV_USE_BES_VGLITE_COMPRESS
+endmenu
+
+menu "Ethernet Configuration"
+	depends on BES130X_ENET
+
+config MXRT_ENET_NRXBUFFERS
+	int "Number Rx buffers"
+	default 6
+
+config BES130X_ENET_NTXBUFFERS
+	int "Number Tx buffers"
+	default 2
+
+config BES130X_ENET_ENHANCEDBD
+	bool # not optional
+	default n
+
+config BES130X_ENET_NETHIFS
+	int  # Not optional
+	default 1
+
+config BES130X_ENET_PHYINIT
+	bool "Board-specific PHY Initialization"
+	default n
+	---help---
+		Some boards require specialized initialization of the PHY before it
+		can be used.  This may include such things as configuring GPIOs,
+		resetting the PHY, etc.  If CONFIG_BES130X_ENET_PHYINIT is defined in
+		the configuration then the board specific logic must provide
+		imxrt_phy_boardinitialize();  The i.MXRT ENET driver will call this
+		function one time before it first uses the PHY.
+
+endmenu # BES130X_ENET
+
+config BTH_USE_SYS_GPIO
+	bool "BTH use SYS GPIO"
+	default n
+
+if BTH_USE_SYS_GPIO
+
+config BTH_USE_SYS_GPIO_BANK
+	int "BTH use SYS GPIO bank(P7_0 - P9_7)"
+	default 2
+
+endif
+
+config FLASH_REMAP
+	bool "FLASH_REMAP"
+	default n
+	---help---
+		Enable flash remap function
+
+config OTA_IMAGE_SIZE
+    hex "ota bin size"
+	default 0x90000
+	---help---
+        set ota section size
+
+config TMA525C
+	bool "TMA525C Touch Pad"
+	default n
+	select I2C
+	select INPUT_TOUCHSCREEN
+	---help---
+		Enable support for the TMA525C Touch Pad driver.
+
+config FL3728
+	bool "FL3728 Matrix LED"
+	default n
+	select I2C
+	---help---
+		Enable support for the FL3728 Matrix LED driver.
+
+config ET6096
+        bool "ET6096 Matrix LED"
+        default n
+        select I2C
+        ---help---
+                Enable support for the ET6096 Matrix LED driver.
+
+config FL3236A
+        bool "FL3236A Matrix LED"
+        default n
+        select I2C
+        ---help---
+                Enable support for the FL3236A Matrix LED driver.
+
+config AW21024
+        bool "AW21024 LED driver"
+        default n
+        select I2C
+        ---help---
+                Enable support for the AW21024  LED driver.
+
+config PSC2945
+        bool "PSC2945 Charge management driver"
+        default n
+        select I2C
+        ---help---
+                Enable support for the PSC2945 Charge management driver.
+
+config BES_HW_VERSION
+        bool "Hardware version driver"
+        default n
+        ---help---
+                Enable support for the hardware version.
+
+config HX3203
+	bool "HX3203 Ambient Light Sensor"
+	default n
+	select I2C
+	---help---
+		Enable support for the HX3203 Ambient Light Sensor driver.
+
+
+config SENSORS_HX3203
+	bool "HX3203 Ambient Light Sensor for uORB"
+	default n
+	select I2C
+	---help---
+		Enable support for the HX3203 Ambient Light Sensor driver.
+
+config I2C0_RPMSG_SERVER
+	bool "I2C0 RPMSG SERVER FOR TOUCH SCREEN"
+	default n
+	select I2C
+	---help---
+		Enable support for the Touch Screen I2C driver.
+
+config MSPI_WIFI_TEST
+	bool "BES2800BP works as master spi with WiFi feature."
+	default n
+	---help---
+		Enable support for MSPI WiFI Test.
+
+config BES_USE_ON_BOARD_32K
+	bool "use board 32k timer"
+	default n
+
+menu "Wireless Driver Configuration"
+
+config IEEE80211_BESTECHNIC_BES2001
+	bool "Bestechnic bes2001 chip support"
+	default n
+
+config IEEE80211_BESTECHNIC_BES2003
+	bool "Bestechnic bes2003 chip support"
+	default n
+
+config IEEE80211_BESTECHNIC_BES2005
+	bool "Bestechnic bes2005 chip support"
+	default n
+
+config IEEE80211_BESTECHNIC_BES2009
+	bool "Bestechnic bes2009 chip support"
+	default n
+
+config IEEE80211_BESTECHNIC_NETDEV_SDIO
+	bool "Bestechnic netdev sdio chip support"
+	default n
+
+config IEEE80211_BESTECHNIC_NETDEV_AX
+	bool "Bestechnic netdev ax chips support"
+	default n
+
+config BES_WIFI_TASKS_PRIORITY
+	int "wifi relative tasks' priority"
+	default 230
+
+endmenu # BES2300WP
+
+endif # ARCH_CHIP_CUSTOM

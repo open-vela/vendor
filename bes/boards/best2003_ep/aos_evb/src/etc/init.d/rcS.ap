@@ -1,0 +1,68 @@
+/****************************************************************************
+ * boards/arm/bes/best2003_ep/src/etc/init.d/rcS
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.  The
+ * ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ ****************************************************************************/
+#ifdef CONFIG_KVDB
+kvdbd &
+#if defined(CONFIG_DRV_INIT_DONT_BLOCK_INIT_ENTRY)
+wait_task_exit BoardDriverInit 8
+#endif
+#endif
+
+#if defined(CONFIG_BES_MTDSDMMC)
+mount -t fatfs -o autoformat /dev/mmcsd0 /sdcard
+#elif defined(CONFIG_BES_MTDSDMMC_EMMC)
+mount -t fatfs -o autoformat /dev/mmcsd1 /sdcard
+#elif defined(CONFIG_BES_MMCSD_SPI)
+mount -t fatfs -o autoformat /dev/mmcsd2 /sdcard
+#else
+mount -t rpmsgfs -o cpu=audio,fs=/sdcard /sdcard
+#endif
+
+#if defined(CONFIG_MTD)
+mount -t littlefs -o autoformat /dev/data /data
+#endif
+
+#ifdef CONFIG_LIB_FLUORIDE
+if [ ! -d /data/factest ]; then
+fluorided &
+bta bdname
+bta scan 2
+fi
+#endif /* CONFIG_LIB_FLUORIDE */
+
+#ifdef CONFIG_BT
+if [ ! -d /data/factest ]; then
+zblue
+fi
+
+#ifdef CONFIG_BT_TESTER
+bttester &
+#endif /* CONFIG_BT_TESTER */
+
+#endif /* CONFIG_BT */
+
+#ifdef CONFIG_IEEE80211_BESTECHNIC_BES2003
+ifup wlan0
+#endif /* CONFIG_IEEE80211_BESTECHNIC_BES2003 */
+
+if [ -d /data/factest ]; then
+#ifdef CONFIG_FACTEST_SAMPLE
+    MSTC_KeyTestStart &
+#endif
+endif

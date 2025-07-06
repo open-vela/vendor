@@ -1,0 +1,39 @@
+############################################################################
+# boards/best2003_ep/configs/ota/Make.defs
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.  The
+# ASF licenses this file to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance with the
+# License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+############################################################################
+
+include ${TOPDIR}/.config
+export CONFIG_ARCH_BOARD := nx_bestbsp_ap
+
+LDSCRIPT = _best1000.lds
+BES_ENTRY = --entry=Boot_Loader
+#BES_SDK_FLASGS += -DARM_CMNS
+export BES_SDK_FLASGS := -DMPU_DEFAULTMAP_DISABLE
+
+include ${TOPDIR}/tools/Config.mk
+include $(BOARD_DIR)/../scripts/Make.defs
+SHELL=/bin/bash
+define POSTBUILD
+	$(Q)echo "Generating: nuttx_ota.bin"; \
+	cp nuttx nuttx_ota.elf;
+	cp nuttx.map nuttx_ota.map;
+	echo -e -n "\x1c\xec\x57\xbe" > nuttx_ota.bin;
+	dd if=nuttx.bin of=nuttx_ota.bin bs=1 skip=4 seek=4;
+
+endef
