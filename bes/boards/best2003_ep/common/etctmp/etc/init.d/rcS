@@ -1,9 +1,2 @@
 set +e
-       mount -t procfs /mnt
-       mount -t rpmsgfs -o cpu=ap,fs=/proc/net /netcp
-       mount -t unionfs -o fspath1=/mnt,fspath2=/netcp,prefix2=net "/proc"
-mount -t tmpfs /tmp
 timedatectl set-timezone Asia/Shanghai
-lvgldemo widgets &
-mount -t fatfs -o autoformat /dev/mmcsd0 /sdcard
-mount -t rpmsgfs -o cpu=ap,fs=/data /data
