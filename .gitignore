@@ -19,3 +19,4 @@ cscope.out
 /*.lib
 .kconfig
 /Kconfig
+.*un~
