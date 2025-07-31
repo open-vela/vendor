@@ -1,2 +1,0 @@
-set +e
-timedatectl set-timezone Asia/Shanghai
