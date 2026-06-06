@@ -6,10 +6,11 @@ The `vendor` repository holds the board support packages (BSP), chip drivers, an
 
 ## Recommended Contest Boards
 
-| Board | Platform | Directory |
-| ----- | -------- | --------- |
-| ESP32-S3 EYE | Espressif ESP32-S3 | `espressif/boards/esp32s3/esp32s3-eye/` |
-| Gemini-S1 | Allwinner R528 | `allwinnertech/boards/r528/r528s3-gemini-s1/` |
+| Board | Platform | Board Guide |
+| ----- | -------- | ----------- |
+| ESP32-S3 EYE | Espressif ESP32-S3 | [esp32s3-eye](https://github.com/open-vela/vendor_espressif/blob/dev-ai-contest-2026/boards/esp32s3/esp32s3-eye/README.md) |
+| Gemini-S1 | Allwinner R528 | [r528s3-gemini-s1](https://github.com/open-vela/vendor_allwinnertech/blob/dev-ai-contest-2026/boards/r528/r528s3-gemini-s1/README.md) |
+| LCKFB Huangshan Pi | SiFli SF32LB52 | [lckfb_huangshan_pi](https://github.com/open-vela/vendor_sifli/blob/dev-ai-contest-2026/boards/sf32lb52/lckfb_huangshan_pi/README.md) |
 
 ## Directory Structure
 

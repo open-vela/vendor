@@ -4,37 +4,30 @@
 
 `vendor` 仓库存放各芯片厂商（SoC Vendor）的板级支持包（BSP）、芯片驱动与产品工程。openvela 通过本仓库适配不同的芯片平台与开发板，是硬件移植（Porting）工作的主要目录。
 
-## 大赛推荐开发板
-
-| 开发板 | 平台 | 目录 |
-| ---- | ---- | ---- |
-| ESP32-S3 EYE | 乐鑫 ESP32-S3 | `espressif/boards/esp32s3/esp32s3-eye/` |
-| Gemini-S1 | 全志 R528 | `allwinnertech/boards/r528/r528s3-gemini-s1/` |
-
 ## 目录结构
 
 仓库顶层按**芯片厂商**组织，每个厂商一个目录，例如：
 
-| 目录 | 说明 |
-| ---- | ---- |
-| `allwinnertech/` | 全志（Allwinner）平台适配。 |
-| `bes/` | 恒玄（BES）平台适配。 |
-| `espressif/` | 乐鑫（Espressif）平台适配。 |
-| `flagchip/` | 旗芯微（Flagchip）平台适配。 |
-| `gigadevice/` | 兆易创新（GigaDevice）平台适配。 |
-| `infineon/` | 英飞凌（Infineon）平台适配。 |
-| `sifli/` | 思澈（SiFli）平台适配。 |
-| `st/` | 意法半导体（ST）平台适配。 |
-| `xiaomi/` | 小米自研平台适配。 |
-| `template/` | 厂商工程模板，用于快速生成新的厂商目录（见下文）。 |
+| 目录             | 说明                                               |
+| ---------------- | -------------------------------------------------- |
+| `allwinnertech/` | 全志（Allwinner）平台适配。                        |
+| `bes/`           | 恒玄（BES）平台适配。                              |
+| `espressif/`     | 乐鑫（Espressif）平台适配。                        |
+| `flagchip/`      | 旗芯微（Flagchip）平台适配。                       |
+| `gigadevice/`    | 兆易创新（GigaDevice）平台适配。                   |
+| `infineon/`      | 英飞凌（Infineon）平台适配。                       |
+| `sifli/`         | 思澈（SiFli）平台适配。                            |
+| `st/`            | 意法半导体（ST）平台适配。                         |
+| `xiaomi/`        | 小米自研平台适配。                                 |
+| `template/`      | 厂商工程模板，用于快速生成新的厂商目录（见下文）。 |
 
 > 以上为示例，实际包含的厂商以仓库内容为准。
 
 每个厂商目录内部通常遵循如下结构：
 
-| 子目录 | 说明 |
-| ---- | ---- |
-| `chips/<chip>/` | 芯片级驱动与硬件抽象（GPIO、SPI、I2C、HAL 等）。 |
+| 子目录                   | 说明                                                    |
+| ------------------------ | ------------------------------------------------------- |
+| `chips/<chip>/`          | 芯片级驱动与硬件抽象（GPIO、SPI、I2C、HAL 等）。        |
 | `boards/<chip>/<board>/` | 板级支持包：启动代码、引脚配置、`configs/` 编译配置等。 |
 
 ## 新增厂商适配
